@@ -72,9 +72,27 @@ score_vec <-
 # Printing
 
 #' @export
+print.score_vec <- function(x, digits = min(getOption("digits"), 3), ...) {
+  print(as.numeric(x), digits = digits, ...)
+  cat("Direction:", direction(x), "\n")
+  invisible(x)
+}
+
+#' @export
 format.score_vec <- function(x, digits = min(getOption("digits"), 3), ...) {
   format(as.numeric(x), digits = digits, ...)
 }
+
+#' @export
+obj_sum.score_vec <- function(x) {
+  dir_chr <- direction(x)
+  if (nchar(dir_chr) > 4) {
+    dir_chr <- substr(dir_chr, 1, 3)
+  }
+  paste0("score <", dir_chr, ">")
+}
+
+
 
 # ------------------------------------------------------------------------------
 # Coercion

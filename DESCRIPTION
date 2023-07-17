@@ -11,6 +11,7 @@ Description: Low-level data and developer interfaces for supervised
 License: MIT + file LICENSE
 Imports: 
     dplyr,
+    pillar,
     purrr,
     rlang,
     tidyr,

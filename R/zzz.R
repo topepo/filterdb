@@ -61,6 +61,9 @@ s3_register <- function(generic, class, method = NULL) {
 
 .onLoad <- function(libname, pkgname) {
 
+  s3_register("pillar::obj_sum", "score_vec")
+
+
   s3_register("generics::fit_xy", "filter_method_corr")
   s3_register("generics::fit_xy", "filter_method_corr_rank")
   s3_register("generics::fit_xy", "filter_method_imp_crf")
