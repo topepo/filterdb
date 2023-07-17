@@ -44,7 +44,7 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
   }
 
   res <-
-    new_filter_score(
+    new_filter_results(
       names(res),
       unname(res),
       object,

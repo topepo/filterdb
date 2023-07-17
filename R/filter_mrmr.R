@@ -37,7 +37,7 @@ fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
     names(res) <- names(x)
   }
 
-  res <- new_filter_score(names(res$score), unname(res$score), object,
+  res <- new_filter_results(names(res$score), unname(res$score), object,
                           rename = rename, num_pred = p)
   res
 }

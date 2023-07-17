@@ -34,7 +34,7 @@ fit_xy.filter_method_imp_rf <- function(object, x, y, rename = FALSE,
   }
 
   res <-
-    new_filter_score(
+    new_filter_results(
       names(res$variable.importance),
       unname(res$variable.importance),
       object,
@@ -88,7 +88,7 @@ fit_xy.filter_method_imp_crf <- function(object, x, y, rename = FALSE,
   }
 
   res <-
-    new_filter_score(
+    new_filter_results(
       names(res),
       unname(res),
       object,

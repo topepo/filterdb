@@ -37,6 +37,6 @@ fit_xy.filter_method_max_diff <- function(object, x, y, rename = FALSE, ...) {
   p <- ncol(x)
 
   res <- purrr::map_dbl(x, ~ comp_max_diff(.x, y = y[[1]]))
-  res <- new_filter_score(names(x), res, object, rename = rename, num_pred = p)
+  res <- new_filter_results(names(x), res, object, rename = rename, num_pred = p)
   res
 }

@@ -34,7 +34,7 @@ fit_xy.filter_method_corr <- function(object, x, y, rename = FALSE, ...) {
   res <- cor(dplyr::bind_cols(y, x), use = "pairwise.complete.obs", ...)
   res <- abs(res[1, -1])
 
-  res <- new_filter_score(names(x), res, object, rename = rename, num_pred = p)
+  res <- new_filter_results(names(x), res, object, rename = rename, num_pred = p)
   res
 }
 

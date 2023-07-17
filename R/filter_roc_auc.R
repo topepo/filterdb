@@ -44,7 +44,7 @@ fit_xy.filter_method_roc_auc <- function(object, x, y, rename = FALSE, ...) {
   roc_scores <- purrr::map_dbl(x, ~ roc_wrapper(x = .x, y = y[[1]])) # TODO add in the ...
   roc_scores <- ifelse(roc_scores < 0.5, 1 - roc_scores, roc_scores)
 
-  res <- new_filter_score(names(x), roc_scores, object, rename = rename,
-                          num_pred = p)
+  res <- new_filter_results(names(x), roc_scores, object, rename = rename,
+                            num_pred = p)
   res
 }
