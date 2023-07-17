@@ -13,7 +13,8 @@ Imports:
     dplyr,
     purrr,
     rlang,
-    tidyr
+    tidyr,
+    vctrs
 Suggests: 
     FSelectorRcpp,
     minerva,
