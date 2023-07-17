@@ -11,6 +11,7 @@ Description: Low-level data and developer interfaces for supervised
 License: MIT + file LICENSE
 Imports: 
     dplyr,
+    generics,
     pillar,
     purrr,
     rlang,
@@ -20,6 +21,7 @@ Suggests:
     FSelectorRcpp,
     minerva,
     mixOmics,
+    modeldata,
     party,
     praznik,
     pROC,

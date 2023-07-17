@@ -22,11 +22,11 @@
 
 ---
 
-    is.numeric(x) is not TRUE
+    `x` must be numeric.
 
 ---
 
-    is.character(direction) && length(direction) == 1L && !is.na(direction) is not TRUE
+    `direction` must be a length 1 character.
 
 ---
 
@@ -38,19 +38,19 @@
 
 ---
 
-    is.character(direction) && length(direction) == 1L && !is.na(direction) is not TRUE
+    `direction` must be a length 1 character.
 
 ---
 
-    is.numeric(x) is not TRUE
+    `x` must be numeric.
 
 ---
 
-    is.numeric(x) is not TRUE
+    `x` must be numeric.
 
 ---
 
-    is.numeric(x) is not TRUE
+    `x` must be numeric.
 
 # printing score vectors
 
@@ -81,4 +81,31 @@
       obj_sum(res_1)
     Output
       [1] "score <max>"
+
+# score vectors helpers
+
+    Code
+      unclass(as_score_vec(1:5))
+    Output
+      [1] 1 2 3 4 5
+      attr(,"direction")
+      [1] "maximize"
+      attr(,"impute")
+      [1] Inf
+
+---
+
+    No implementation of `as_score_vec()` for object of class `character`.
+
+---
+
+    No implementation of `direction()` for object of class `integer`.
+
+---
+
+    No implementation of `missing_val()` for object of class `character`.
+
+---
+
+    No implementation of `impute_score()` for object of class `character`.
 

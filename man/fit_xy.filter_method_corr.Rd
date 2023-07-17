@@ -15,41 +15,27 @@
 \alias{fit_xy.filter_method_roc_auc}
 \title{Execute a supervised filter}
 \usage{
-fit_xy.filter_method_corr(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_corr}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_corr_rank(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_corr_rank}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_imp_rf(
-  object,
-  x,
-  y,
-  rename = FALSE,
-  seed = sample.int(1000, 1),
-  ...
-)
+\method{fit_xy}{filter_method_imp_rf}(object, x, y, rename = FALSE, seed = sample.int(1000, 1), ...)
 
-fit_xy.filter_method_imp_crf(
-  object,
-  x,
-  y,
-  rename = FALSE,
-  seed = sample.int(1000, 1),
-  ...
-)
+\method{fit_xy}{filter_method_imp_crf}(object, x, y, rename = FALSE, seed = sample.int(1000, 1), ...)
 
-fit_xy.filter_method_info_gain(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_info_gain}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_info_gain_ratio(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_info_gain_ratio}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_mic(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_mic}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_max_diff(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_max_diff}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_mrmr(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_mrmr}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_imp_pls(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_imp_pls}(object, x, y, rename = FALSE, ...)
 
-fit_xy.filter_method_roc_auc(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_roc_auc}(object, x, y, rename = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class \code{filter_method}.}

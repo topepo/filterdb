@@ -2,6 +2,11 @@
 #' @export
 pillar::obj_sum
 
+#' @importFrom generics fit_xy
+#' @export
+generics::fit_xy
+
+
 # from tune
 # nocov start
 
