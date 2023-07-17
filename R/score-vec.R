@@ -184,6 +184,26 @@ missing_val.score_vec <- function(x) {
 }
 
 # -----------------------
+# impute_score
+
+#' @rdname return-direction
+#' @export
+impute_score <- function(x) {
+  UseMethod("impute_score")
+}
+
+#' @export
+impute_score.default <- function(x) {
+  abort_default(x, "impute_score")
+}
+
+#' @export
+impute_score.score_vec <- function(x) {
+  x[is.na(x)] <- missing_val(x)
+  x
+}
+
+# -----------------------
 # is_score_vec
 
 #' Test if an object inherits from `score_vec`
