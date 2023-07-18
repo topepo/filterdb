@@ -34,7 +34,7 @@ fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
   }
 
   res <-
-    new_filter_score(
+    new_filter_results(
       res$variable,
       res$score,
       object,
@@ -78,7 +78,7 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, .
   }
 
   res <-
-    new_filter_score(
+    new_filter_results(
       res$variable,
       res$score,
       object,
@@ -124,7 +124,7 @@ fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
   }
 
   res <-
-    new_filter_score(
+    new_filter_results(
       colnames(x),
       res,
       object,

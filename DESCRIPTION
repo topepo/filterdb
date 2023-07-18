@@ -11,20 +11,26 @@ Description: Low-level data and developer interfaces for supervised
 License: MIT + file LICENSE
 Imports: 
     dplyr,
+    generics,
+    pillar,
     purrr,
     rlang,
-    tidyr
+    tidyr,
+    vctrs
 Suggests: 
+    covr,
     FSelectorRcpp,
     minerva,
     mixOmics,
+    modeldata,
     party,
     praznik,
     pROC,
     ranger,
     spelling,
-    testthat
+    testthat (>= 3.0.0)
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Config/testthat/edition: 3

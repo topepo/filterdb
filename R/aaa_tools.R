@@ -50,7 +50,7 @@ new_filter_method <- function(name, label, goal = "maximize",
   res
 }
 
-new_filter_score <- function(predictors, results, object, num_pred, rename = FALSE) {
+new_filter_results <- function(predictors, results, object, num_pred, rename = FALSE) {
   # check dims and types
    if (!is.character(predictors)) {
      rlang::abort("'predictors' should be a character vector")
@@ -69,14 +69,20 @@ new_filter_score <- function(predictors, results, object, num_pred, rename = FAL
     rlang::abort(msg)
   }
 
+  # ------------------------------------------------------------------------------
+
+  imp_val <- goal_to_impute(object)
+  results <- new_score_vec(results, direction = object$goal, impute = imp_val)
   res <- dplyr::tibble(variable = predictors, score = results)
+
   if (object$goal == "minimize") {
     res <- res[order(res$score),]
   } else if (object$goal == "maximize") {
     res <- res[order(res$score, decreasing = TRUE),]
-  } else if (object$goal == "maximize") {
+  } else if (object$goal == "zero") {
     res <- res[order(abs(res$score)),]
   }
+
   if (rename) {
     names(res)[2] <- object$name
   }
@@ -157,3 +163,16 @@ get_score_info.filter_results <- function(x, att = "goal", ...) {
   attributes(x)$spec[[att]]
 }
 
+
+goal_to_impute <- function(x) {
+  if (x$goal == "maximize") {
+    res <- Inf
+  } else if (x$goal == "minimize") {
+    res <- -Inf
+  } else if (x$goal == "zero") {
+    res <- 0.0
+  } else {
+    rlang::abort(paste0("Cannot have a score goal of '", x$goal, "'"))
+  }
+  res
+}

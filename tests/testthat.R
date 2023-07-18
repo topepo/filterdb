@@ -9,4 +9,4 @@
 library(testthat)
 library(filterdb)
 
-# test_check("filterdb")
+test_check("filterdb")
