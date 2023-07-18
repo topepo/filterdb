@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Correlation filters
 
-
+# nocov start
 filter_corr <-
   new_filter_method(
     name = "corr",
@@ -10,6 +10,7 @@ filter_corr <-
     inputs = "quantitative",
     outputs = "quantitative"
   )
+# nocov end
 
 #' Execute a supervised filter
 #'
@@ -40,6 +41,7 @@ fit_xy.filter_method_corr <- function(object, x, y, rename = FALSE, ...) {
 
 ###
 
+# nocov start
 filter_corr_rank <-
   new_filter_method(
     name = "corr_rank",
@@ -48,6 +50,7 @@ filter_corr_rank <-
     inputs = "quantitative",
     outputs = "quantitative"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export

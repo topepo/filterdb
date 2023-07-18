@@ -1,5 +1,6 @@
 # PLS methods
 
+# nocov start
 filter_imp_pls <-
   new_filter_method(
     name = "imp_pls",
@@ -9,6 +10,7 @@ filter_imp_pls <-
     outputs = "all",
     pkgs = "mixOmics"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export

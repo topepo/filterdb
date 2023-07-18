@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Information
 
-
+# nocov start
 filter_info_gain <-
   new_filter_method(
     name = "info_gain",
@@ -11,6 +11,7 @@ filter_info_gain <-
     outputs = "qualitative",
     pkgs = "FSelectorRcpp"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
@@ -46,6 +47,7 @@ fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
 
 ###
 
+# nocov start
 filter_info_gain_ratio <-
   new_filter_method(
     name = "info_gain_ratio",
@@ -55,6 +57,7 @@ filter_info_gain_ratio <-
     outputs = "qualitative",
     pkgs = "FSelectorRcpp"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
@@ -90,6 +93,7 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, .
 
 ###
 
+# nocov start
 filter_mic <-
   new_filter_method(
     name = "mic",
@@ -99,6 +103,7 @@ filter_mic <-
     outputs = "quantitative",
     pkgs = "minerva"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export

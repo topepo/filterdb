@@ -1,6 +1,7 @@
 # ------------------------------------------------------------------------------
 # Area under the ROC curve
 
+# nocov start
 filter_roc_auc <-
   new_filter_method(
     name = "roc_auc",
@@ -10,6 +11,7 @@ filter_roc_auc <-
     outputs = "qualitative",
     pkgs = "pROC"
   )
+# nocov end
 
 roc_wrapper <- function(x, y, ...) {
   cl <-
@@ -33,9 +35,6 @@ fit_xy.filter_method_roc_auc <- function(object, x, y, rename = FALSE, ...) {
   # check empty dots
   # case weights? event_level?
   x <- dplyr::as_tibble(x)
-  if (is.vector(y)) {
-    y <- dplyr::as_tibble(y)
-  }
   validate_filter_data(object, x, y)
 
   p <- ncol(x)

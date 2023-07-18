@@ -1,6 +1,7 @@
 # ------------------------------------------------------------------------------
 # Minimum Redundancy Maximal Relevancy Filter
 
+# nocov start
 filter_mrmr <-
   new_filter_method(
     name = "mrmr",
@@ -10,16 +11,19 @@ filter_mrmr <-
     outputs = "qualitative",
     pkgs = "praznik"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
 fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
-  if (is.vector(y)) { # TODO do these outside of these functions
-    y <- dplyr::as_tibble(y)
-  }
   validate_filter_data(object, x, y)
-  # TODO convert ints in 'x' to doubles. See ?praznik::MRMR
+  # convert ints in 'x' to doubles. See ?praznik::MRMR
+  x <- purrr::map(x, check_ints)
+  x <- dplyr::bind_cols(x)
+  is_complt <- vctrs:::vec_detect_complete(x) & vctrs:::vec_detect_complete(y)
+  x <- x[is_complt,, drop = FALSE]
+  y <- y[is_complt,, drop = FALSE]
 
   y <- y[[1]]
   p <- ncol(x)
@@ -41,3 +45,4 @@ fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
                           rename = rename, num_pred = p)
   res
 }
+

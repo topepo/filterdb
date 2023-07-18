@@ -1,6 +1,7 @@
 # ------------------------------------------------------------------------------
 # Max difference in the outcome between groups of a factor predictor
 
+# nocov start
 filter_max_diff <-
   new_filter_method(
     name = "max_diff",
@@ -9,6 +10,7 @@ filter_max_diff <-
     inputs = "qualitative",
     outputs = "all"
   )
+# nocov end
 
 comp_max_diff <- function(x, y) {
   dat <- data.frame(x = x, y = y)

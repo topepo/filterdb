@@ -1,6 +1,7 @@
 # ------------------------------------------------------------------------------
 # Variable importance
 
+# nocov start
 filter_imp_rf <-
   new_filter_method(
     name = "imp_rf",
@@ -10,6 +11,7 @@ filter_imp_rf <-
     outputs = "all",
     pkgs = "ranger"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
@@ -46,7 +48,7 @@ fit_xy.filter_method_imp_rf <- function(object, x, y, rename = FALSE,
 
 ###
 
-
+# nocov start
 filter_imp_crf <-
   new_filter_method(
     name = "imp_crf",
@@ -56,6 +58,7 @@ filter_imp_crf <-
     outputs = "all",
     pkgs = "party"
   )
+# nocov end
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
