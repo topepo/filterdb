@@ -17,7 +17,9 @@ filter_info_gain <-
 fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
-  # validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   y <- y[[1]]
   p <- ncol(x)
@@ -33,10 +35,12 @@ fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
     res <- setNames(res, c("variable", "score"))
   }
 
+  score <- new_score_vec(res$score, direction = "maximize", impute = Inf)
+
   res <-
     new_filter_results(
       res$variable,
-      res$score,
+      score,
       object,
       rename = rename,
       num_pred = p
@@ -61,7 +65,9 @@ filter_info_gain_ratio <-
 fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
-  # validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   y <- y[[1]]
   p <- ncol(x)
@@ -77,10 +83,12 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, .
     res <- setNames(res, c("variable", "score"))
   }
 
+  score <- new_score_vec(res$score, direction = "maximize", impute = Inf)
+
   res <-
     new_filter_results(
       res$variable,
-      res$score,
+      score,
       object,
       rename = rename,
       num_pred = p
@@ -105,7 +113,9 @@ filter_mic <-
 fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  # validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   x <- as.matrix(x)
   y <- y[[1]]
@@ -123,10 +133,12 @@ fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
     res <- res$MIC[,1]
   }
 
+  score <- new_score_vec(res, direction = "maximize", impute = Inf)
+
   res <-
     new_filter_results(
       colnames(x),
-      res,
+      score,
       object,
       rename = rename,
       num_pred = p

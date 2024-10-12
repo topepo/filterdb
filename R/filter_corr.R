@@ -5,12 +5,15 @@ filter_corr <-
   new_filter_method(
     name = "corr",
     label = "Correlation Filter",
-    goal = "maximize",
+    goal = "maximize_abs",
     inputs = c("double", "integer"),
     outputs = c("double", "integer")
   )
 
-#' Execute a supervised filter
+# TODO don't need rename, p, goal
+# TODO add a list of data hooks for additional checks
+
+#' Execute a single supervised filter
 #'
 #' @param object An object of class `filter_method`.
 #' @param x A data frame of predictors.
@@ -47,9 +50,9 @@ filter_corr_rank <-
   new_filter_method(
     name = "corr_rank",
     label = "Rank Correlation Filter",
-    goal = "maximize",
-    inputs = "quantitative",
-    outputs = "quantitative"
+    goal = "maximize_abs",
+    inputs = c("double", "integer"),
+    outputs = c("double", "integer")
   )
 
 #' @rdname fit_xy.filter_method_corr

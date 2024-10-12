@@ -13,7 +13,7 @@
 \alias{fit_xy.filter_method_mrmr}
 \alias{fit_xy.filter_method_imp_pls}
 \alias{fit_xy.filter_method_roc_auc}
-\title{Execute a supervised filter}
+\title{Execute a single supervised filter}
 \usage{
 \method{fit_xy}{filter_method_corr}(object, x, y, rename = FALSE, ...)
 
@@ -57,5 +57,5 @@ A tibble with a character column (\code{variable}) and a column for the
 score values.
 }
 \description{
-Execute a supervised filter
+Execute a single supervised filter
 }
