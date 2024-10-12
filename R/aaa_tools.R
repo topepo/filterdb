@@ -1,10 +1,11 @@
+var_types <- c("all", "qualitative", "quantitative")
+goal_types <- c("maximize", "minimize", "maximize_abs", "minimize_abs", "zero")
+
 #' @include import-standalone-obj-type.R import-standalone-types-check.R
 #' @keywords internal
 #' @export
 new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = character(0),
                               call = rlang::caller_env()) {
-  var_types <- c("all", "qualitative", "quantitative")
-  goal_types <- c("maximize", "minimize", "zero")
   check_string(name, allow_empty = FALSE, call = call)
   check_string(label, allow_empty = FALSE, call = call)
   goal <- rlang::arg_match0(goal, goal_types, error_call = call)
@@ -31,6 +32,7 @@ new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = charact
 
 # TODO case weights :-(
 
+# TODO add imputation value
 new_filter_results <- function(predictors, results, object, num_pred, rename = FALSE,
                                call = rlang::caller_env()) {
   # check dims and types
@@ -55,10 +57,17 @@ new_filter_results <- function(predictors, results, object, num_pred, rename = F
   results <- new_score_vec(results, direction = object$goal, impute = imp_val)
   res <- dplyr::tibble(variable = predictors, score = results)
 
+  # TODO make some sort of S3 method here (transform and/or ranking) There is a
+  # base::transform method
+  # TODO why even do this?
   if (object$goal == "minimize") {
     res <- res[order(res$score),]
   } else if (object$goal == "maximize") {
     res <- res[order(res$score, decreasing = TRUE),]
+  } else if (object$goal == "minimize_abs") {
+    res <- res[order(abs(res$score)),]
+  } else if (object$goal == "maximize_abs") {
+    res <- res[order(abs(res$score), decreasing = TRUE),]
   } else if (object$goal == "zero") {
     res <- res[order(abs(res$score)),]
   }
@@ -163,4 +172,11 @@ check_number_decimal_vec <- function(x, ..., call = rlang::caller_env()) {
     check_number_decimal(i, ...)
   }
   invisible(NULL)
+}
+
+transform_score <- function(x, goal) {
+  if (grepl("abs$", goal) | goal == "zero") {
+    x <- abs(x)
+  }
+  x
 }

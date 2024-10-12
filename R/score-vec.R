@@ -198,6 +198,8 @@ impute_score.score_vec <- function(x) {
   x
 }
 
+# TODO reorder method
+
 # -----------------------
 # is_score_vec
 
