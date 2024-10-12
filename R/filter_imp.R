@@ -5,8 +5,8 @@ filter_imp_rf <-
   new_filter_method(
     name = "imp_rf",
     label = "Random Forest Variable Importance",
-    inputs = c("double", "integer", "factor"),
-    outputs = c("double", "integer", "factor"),
+    predictor_types = c("double", "integer", "factor"),
+    outcome_types = c("double", "integer", "factor"),
     pkgs = "ranger"
   )
 
@@ -53,8 +53,8 @@ filter_imp_crf <-
   new_filter_method(
     name = "imp_crf",
     label = "Random Forest Variable Importance (Conditional Inference)",
-    inputs = c("double", "integer", "factor"),
-    outputs = c("double", "integer", "factor"),
+    predictor_types = c("double", "integer", "factor"),
+    outcome_types = c("double", "integer", "factor"),
     pkgs = "party"
   )
 

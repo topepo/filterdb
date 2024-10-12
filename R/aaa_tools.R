@@ -3,7 +3,7 @@ goal_types <- c("maximize", "minimize", "maximize_abs", "minimize_abs", "zero")
 #' @include import-standalone-obj-type.R import-standalone-types-check.R
 #' @keywords internal
 #' @export
-new_filter_method <- function(name, label, inputs, outputs, pkgs = character(0),
+new_filter_method <- function(name, label, predictor_types, outcome_types, pkgs = character(0),
                               call = rlang::caller_env()) {
   check_string(name, allow_empty = FALSE, call = call)
   check_string(label, allow_empty = FALSE, call = call)
@@ -18,8 +18,8 @@ new_filter_method <- function(name, label, inputs, outputs, pkgs = character(0),
     list(
       name = make.names(name),
       label = tools::toTitleCase(label),
-      inputs = inputs,
-      outputs = outputs,
+      predictor_types = predictor_types,
+      outcome_types = outcome_types,
       pkgs = pkgs
     )
   class(res) <- c(paste0("filter_method_", name), "filter_method")

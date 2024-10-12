@@ -13,10 +13,10 @@ check_data_for_filters <- function(info, x, y, call) {
 }
 
 has_data_for_method <- function(mthd, x, y) {
-  pred_cls <- mthd$inputs
+  pred_cls <- mthd$predictor_types
   pred_cols <- has_data_classes(x, pred_cls)
 
-  outcome_cls <- mthd$outputs
+  outcome_cls <- mthd$outcome_types
   outcome_cols <- has_data_classes(y, outcome_cls)
   # check for 2+ outcomes and fail
 
@@ -39,13 +39,13 @@ check_data_for_method <- function(mthd, x, y, verbose = TRUE,
 
   if (!has_predictors & !has_outcomes) {
     cli::cli_warn("There are no predictors with class(es)
-                   {.val {mthd$inputs}} and no outcomes with class(es)
-                   {.val {mthd$outputs}}.", call = call)
+                   {.val {mthd$predictor_types}} and no outcomes with class(es)
+                   {.val {mthd$outcome_types}}.", call = call)
   } else if (!has_predictors) {
-    cli::cli_warn("There are no predictors with class(es) {.val {mthd$inputs}}.",
+    cli::cli_warn("There are no predictors with class(es) {.val {mthd$predictor_types}}.",
                   call = call)
   } else if (!has_outcomes) {
-    cli::cli_warn("There are no outcomes with class(es) {.val {mthd$outputs}}.",
+    cli::cli_warn("There are no outcomes with class(es) {.val {mthd$outcome_types}}.",
                   call = call)
   }
 

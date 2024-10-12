@@ -5,8 +5,8 @@ filter_corr <-
   new_filter_method(
     name = "corr",
     label = "Correlation Filter",
-    inputs = c("double", "integer"),
-    outputs = c("double", "integer")
+    predictor_types = c("double", "integer"),
+    outcome_types = c("double", "integer")
   )
 
 # TODO don't need, p
@@ -47,8 +47,8 @@ filter_corr_rank <-
   new_filter_method(
     name = "corr_rank",
     label = "Rank Correlation Filter",
-    inputs = c("double", "integer"),
-    outputs = c("double", "integer")
+    predictor_types = c("double", "integer"),
+    outcome_types = c("double", "integer")
   )
 
 #' @rdname fit_xy.filter_method_corr
