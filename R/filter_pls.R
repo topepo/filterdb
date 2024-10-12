@@ -4,7 +4,6 @@ filter_imp_pls <-
   new_filter_method(
     name = "imp_pls",
     label = "Partial Least Squares Variable Importance",
-    goal = "maximize",
     inputs = c("double", "integer"),
     outputs = c("double", "integer", "factor"),
     pkgs = "mixOmics"

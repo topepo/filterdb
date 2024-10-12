@@ -5,7 +5,6 @@ filter_max_diff <-
   new_filter_method(
     name = "max_diff",
     label = "Maximum Group Difference",
-    goal = "maximize",
     inputs = "factor",
     outputs = c("double", "integer", "factor")
   )

@@ -6,7 +6,6 @@ filter_info_gain <-
   new_filter_method(
     name = "info_gain",
     label = "Information Gain",
-    goal = "maximize",
     inputs = c("double", "integer", "factor"),
     outputs = "factor",
     pkgs = "FSelectorRcpp"
@@ -53,7 +52,6 @@ filter_info_gain_ratio <-
   new_filter_method(
     name = "info_gain_ratio",
     label = "Information Gain Ratio",
-    goal = "maximize",
     inputs = c("double", "integer", "factor"),
     outputs = "factor",
     pkgs = "FSelectorRcpp"
@@ -100,7 +98,6 @@ filter_mic <-
   new_filter_method(
     name = "mic",
     label = "Maximal Information Coefficient",
-    goal = "maximize",
     inputs = c("double", "integer"),
     outputs = c("double", "integer"),
     pkgs = "minerva"

@@ -5,7 +5,6 @@ filter_roc_auc <-
   new_filter_method(
     name = "roc_auc",
     label = "Area under the ROC Curve",
-    goal = "maximize",
     inputs = c("double", "integer"),
     outputs = "factor",
     pkgs = "pROC"

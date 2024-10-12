@@ -5,7 +5,6 @@ filter_mrmr <-
   new_filter_method(
     name = "mrmr",
     label = "Minimum Redundancy Maximal Relevancy Filter",
-    goal = "maximize", # TODO encode this in the score vector
     inputs = c("double", "integer", "factor"),
     outputs = "factor",
     pkgs = "praznik"
