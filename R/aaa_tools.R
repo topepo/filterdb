@@ -1,4 +1,3 @@
-var_types <- c("all", "qualitative", "quantitative") # TODO vectors of specific types (eg double, factor)
 goal_types <- c("maximize", "minimize", "maximize_abs", "minimize_abs", "zero")
 
 #' @include import-standalone-obj-type.R import-standalone-types-check.R
@@ -29,7 +28,6 @@ new_filter_method <- function(name, label, inputs, outputs, pkgs = character(0),
 
 # TODO case weights :-(
 
-# TODO add imputation value
 new_filter_results <- function(predictors, results, object, num_pred,
                                call = rlang::caller_env()) {
   # check dims and types
