@@ -38,6 +38,6 @@ fit_xy.filter_method_mrmr <- function(object, x, y, ...) {
   predictors <- names(res$score)
   res$score <- new_score_vec(unname(res$score), direction = "maximize", impute = Inf)
 
-  res <- new_filter_results(names(res$score), res$score , object, num_pred = p)
+  res <- new_filter_results(names(res$score), res$score , object,)
   res
 }

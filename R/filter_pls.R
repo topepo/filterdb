@@ -50,7 +50,7 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
       names(res),
       score,
       object,
-      num_pred = p
+     
     )
   res
 }

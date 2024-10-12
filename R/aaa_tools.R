@@ -28,8 +28,7 @@ new_filter_method <- function(name, label, inputs, outputs, pkgs = character(0),
 
 # TODO case weights :-(
 
-new_filter_results <- function(predictors, results, object, num_pred,
-                               call = rlang::caller_env()) {
+new_filter_results <- function(predictors, results, object, call = rlang::caller_env()) {
   # check dims and types
    if (!is.character(predictors)) {
      cli::cli_abort("{.arg predictors} should be a character vector", call = call)
@@ -39,11 +38,6 @@ new_filter_results <- function(predictors, results, object, num_pred,
   }
   if (length(predictors) != length(results)) {
     cli::cli_abort("{.arg results} and {.arg predictors} should be the same length", call = call)
-  }
-  if (length(predictors) != num_pred) {
-    cli::cli_abort("{.arg results} and {.arg predictors} should be the same
-                   length and the number of original predictors",
-                   call = call)
   }
 
   # ------------------------------------------------------------------------------
@@ -62,86 +56,6 @@ new_filter_results <- function(predictors, results, object, num_pred,
 }
 
 # ------------------------------------------------------------------------------
-# Checks for data types required for the methods
-
-is_qual <- function(x) {
-  inherits(x, c("factor", "character"))
-}
-
-is_quant <- function(x) {
-  inherits(x, c("double", "integer"))
-}
-
-is_bad_type<- function(data, type) {
-  if (type == "quantitative") {
-    is_bad_type <- purrr::map_lgl(data, is_qual)
-  } else if (type == "qualitative") {
-    is_bad_type <- purrr::map_lgl(data, is_quant)
-  } else {
-    is_bad_type <- FALSE
-  }
-  is_bad_type
-}
-
-validate_filter_data <- function(object, x, y, call) {
-  if (!is.data.frame(y)) {
-    cli::cli_abort("{.arg y} should be a data frame.", call = call)
-  }
-  if (nrow(x) != nrow(y)) {
-    cli::cli_abort("The number of rows in {.arg x} and {.arg y} are not the same.", call = call)
-  }
-  if (ncol(y) > 1) {
-    cli::cli_abort("Filters only support single outcome methods.", call = call)
-  }
-
-  bad_x <- is_bad_type(x, object$inputs)
-  if (any(bad_x)) {
-    cli::cli_abort("There are predictor columns that are not {object$inputs}", call = call)
-  }
-  bad_y <- is_bad_type(y, object$outputs)
-  if (any(bad_y)) {
-    cli::cli_abort("There are outcome columns that are not {object$outputs}",  call = call)
-  }
-  invisible(NULL)
-}
-
-# ------------------------------------------------------------------------------
-
-#' Get some attribute of a filter method
-#'
-#' @param x An object.
-#' @param att A single character value for the attribute being returned.
-#' @param ... Not currently used.
-#' @export
-get_score_info <- function(x, att = "goal", ...) {
-  UseMethod("get_score_info")
-}
-
-#' @rdname get_score_info
-#' @export
-get_score_info.filter_method <- function(x, att = "goal", ...) {
-  x[[att]]
-}
-
-#' @rdname get_score_info
-#' @export
-get_score_info.filter_results <- function(x, att = "goal", ...) {
-  attributes(x)$spec[[att]]
-}
-
-
-goal_to_impute <- function(x) {
-  if (x$goal == "maximize") {
-    res <- Inf
-  } else if (x$goal == "minimize") {
-    res <- -Inf
-  } else if (x$goal == "zero") {
-    res <- 0.0
-  } else {
-    cli::cli_abort("Cannot have a score goal of {x$goal}", call = call)
-  }
-  res
-}
 
 check_number_decimal_vec <- function(x, ..., call = rlang::caller_env()) {
   if (!is.vector(x)) {
@@ -153,6 +67,7 @@ check_number_decimal_vec <- function(x, ..., call = rlang::caller_env()) {
   invisible(NULL)
 }
 
+# TODO add this somewhere
 transform_score <- function(x, goal) {
   if (grepl("abs$", goal) | goal == "zero") {
     x <- abs(x)

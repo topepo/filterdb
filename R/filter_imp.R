@@ -41,7 +41,7 @@ fit_xy.filter_method_imp_rf <- function(object, x, y,
       names(res$variable.importance),
       scores,
       object,
-      num_pred = p
+     
     )
   res
 }
@@ -98,7 +98,7 @@ fit_xy.filter_method_imp_crf <- function(object, x, y,
       names(res),
       scores,
       object,
-      num_pred = p
+     
     )
   res
 }

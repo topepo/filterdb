@@ -41,7 +41,7 @@ fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
       res$variable,
       score,
       object,
-      num_pred = p
+     
     )
   res
 }
@@ -87,7 +87,7 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
       res$variable,
       score,
       object,
-      num_pred = p
+     
     )
   res
 }
@@ -135,7 +135,7 @@ fit_xy.filter_method_mic <- function(object, x, y, ...) {
       colnames(x),
       score,
       object,
-      num_pred = p
+     
     )
   res
 }

@@ -44,6 +44,6 @@ fit_xy.filter_method_roc_auc <- function(object, x, y, ...) {
   score <- new_score_vec(unname(roc_scores), direction = "maximize", impute = 1.0)
 
   res <- new_filter_results(names(x), score, object,
-                            num_pred = p)
+                           )
   res
 }

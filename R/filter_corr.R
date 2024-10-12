@@ -37,7 +37,7 @@ fit_xy.filter_method_corr <- function(object, x, y,  ...) {
 
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = 1.0)
 
-  res <- new_filter_results(names(x), score, object, num_pred = p)
+  res <- new_filter_results(names(x), score, object,)
   res
 }
 
