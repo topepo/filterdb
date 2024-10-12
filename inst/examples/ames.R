@@ -79,6 +79,8 @@ val_all %>%
 # ------------------------------------------------------------------------------
 # Ranking via desirability
 
+# TODO may want use as.vector() in data before desirability
+
 filter_d <-
   ~ d_max(corr_rank, 0.25, 1) +
   d_max(max_diff, 0, 3) +
