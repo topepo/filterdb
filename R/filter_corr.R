@@ -10,7 +10,7 @@ filter_corr <-
     outputs = c("double", "integer")
   )
 
-# TODO don't need rename, p, goal
+# TODO don't need, p, goal
 # TODO add a list of data hooks for additional checks
 
 #' Execute a single supervised filter
@@ -18,15 +18,13 @@ filter_corr <-
 #' @param object An object of class `filter_method`.
 #' @param x A data frame of predictors.
 #' @param y A data frame with the outcome column.
-#' @param rename A logical; if `TRUE` then the results are given the name of the
-#' filter (e.g., `corr`). Otherwise the column is named `score`.
 #' @param seed A single integer to set the seed. If `NULL`, the current RNG
 #' state is used.
 #' @param ... Options passed to the underlying method (if any).
 #' @return A tibble with a character column (`variable`) and a column for the
 #' score values.
 #' @export
-fit_xy.filter_method_corr <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_corr <- function(object, x, y,  ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -40,7 +38,7 @@ fit_xy.filter_method_corr <- function(object, x, y, rename = FALSE, ...) {
 
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = 1.0)
 
-  res <- new_filter_results(names(x), score, object, rename = rename, num_pred = p)
+  res <- new_filter_results(names(x), score, object, num_pred = p)
   res
 }
 
@@ -57,6 +55,6 @@ filter_corr_rank <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_corr_rank <- function(object, x, y, rename = FALSE, ...) {
-  fit_xy.filter_method_corr(object, x, y,  rename = rename, method = "spearman")
+fit_xy.filter_method_corr_rank <- function(object, x, y,  ...) {
+  fit_xy.filter_method_corr(object, x, y, method = "spearman")
 }

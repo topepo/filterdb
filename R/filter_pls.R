@@ -12,7 +12,7 @@ filter_imp_pls <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -51,7 +51,6 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
       names(res),
       score,
       object,
-      rename = rename,
       num_pred = p
     )
   res

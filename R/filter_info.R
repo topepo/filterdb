@@ -14,7 +14,7 @@ filter_info_gain <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -42,7 +42,6 @@ fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
       res$variable,
       score,
       object,
-      rename = rename,
       num_pred = p
     )
   res
@@ -62,7 +61,7 @@ filter_info_gain_ratio <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -90,7 +89,6 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, .
       res$variable,
       score,
       object,
-      rename = rename,
       num_pred = p
     )
   res
@@ -110,7 +108,7 @@ filter_mic <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_mic <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -140,7 +138,6 @@ fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
       colnames(x),
       score,
       object,
-      rename = rename,
       num_pred = p
     )
   res

@@ -29,7 +29,7 @@ roc_wrapper <- function(x, y, ...) {
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_roc_auc <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_roc_auc <- function(object, x, y, ...) {
   # check empty dots
   # case weights? event_level?
   x <- dplyr::as_tibble(x)
@@ -44,7 +44,7 @@ fit_xy.filter_method_roc_auc <- function(object, x, y, rename = FALSE, ...) {
   roc_scores <- ifelse(roc_scores < 0.5, 1 - roc_scores, roc_scores)
   score <- new_score_vec(unname(roc_scores), direction = "maximize", impute = 1.0)
 
-  res <- new_filter_results(names(x), score, object, rename = rename,
+  res <- new_filter_results(names(x), score, object,
                             num_pred = p)
   res
 }

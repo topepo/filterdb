@@ -4,13 +4,10 @@ goal_types <- c("maximize", "minimize", "maximize_abs", "minimize_abs", "zero")
 #' @include import-standalone-obj-type.R import-standalone-types-check.R
 #' @keywords internal
 #' @export
-new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = character(0),
+new_filter_method <- function(name, label, inputs, outputs, pkgs = character(0),
                               call = rlang::caller_env()) {
   check_string(name, allow_empty = FALSE, call = call)
   check_string(label, allow_empty = FALSE, call = call)
-  goal <- rlang::arg_match0(goal, goal_types, error_call = call)
-  # inputs  <- rlang::arg_match0(inputs, var_types , error_call = call)
-  # outputs <- rlang::arg_match0(outputs, var_types, error_call = call)
 
   if (!is.character(pkgs)) {
     cli::cli_abort("'pkgs' should be a character vector.", call = call)
@@ -22,7 +19,6 @@ new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = charact
     list(
       name = make.names(name),
       label = tools::toTitleCase(label),
-      goal = goal,
       inputs = inputs,
       outputs = outputs,
       pkgs = pkgs
@@ -34,7 +30,7 @@ new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = charact
 # TODO case weights :-(
 
 # TODO add imputation value
-new_filter_results <- function(predictors, results, object, num_pred, rename = FALSE,
+new_filter_results <- function(predictors, results, object, num_pred,
                                call = rlang::caller_env()) {
   # check dims and types
    if (!is.character(predictors)) {
@@ -60,24 +56,6 @@ new_filter_results <- function(predictors, results, object, num_pred, rename = F
 
   res <- dplyr::tibble(variable = predictors, score = results)
 
-  # TODO make some sort of S3 method here (transform and/or ranking) There is a
-  # base::transform method
-  # TODO why even do this?
-  if (object$goal == "minimize") {
-    res <- res[order(res$score),]
-  } else if (object$goal == "maximize") {
-    res <- res[order(res$score, decreasing = TRUE),]
-  } else if (object$goal == "minimize_abs") {
-    res <- res[order(abs(res$score)),]
-  } else if (object$goal == "maximize_abs") {
-    res <- res[order(abs(res$score), decreasing = TRUE),]
-  } else if (object$goal == "zero") {
-    res <- res[order(abs(res$score)),]
-  }
-
-  if (rename) {
-    names(res)[2] <- object$name
-  }
   base_cls <- class(res)
   attr(res, "spec") <- object # TODO only save what you need?
   class(res) <- c(paste0("filter_results", object$name), "filter_results", base_cls)

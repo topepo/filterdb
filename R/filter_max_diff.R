@@ -29,7 +29,7 @@ comp_max_diff <- function(x, y) {
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_max_diff <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_max_diff <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -40,6 +40,6 @@ fit_xy.filter_method_max_diff <- function(object, x, y, rename = FALSE, ...) {
 
   res <- purrr::map_dbl(x, ~ comp_max_diff(.x, y = y[[1]]))
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = Inf)
-  res <- new_filter_results(names(x), score, object, rename = rename, num_pred = p)
+  res <- new_filter_results(names(x), score, object, num_pred = p)
   res
 }

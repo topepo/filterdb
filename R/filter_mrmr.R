@@ -13,7 +13,7 @@ filter_mrmr <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_mrmr <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   cols <- has_data_for_method(object, x, y)
   x <- x[, cols$predictors]
@@ -39,7 +39,6 @@ fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
   predictors <- names(res$score)
   res$score <- new_score_vec(unname(res$score), direction = "maximize", impute = Inf)
 
-  res <- new_filter_results(names(res$score), res$score , object,
-                            rename = rename, num_pred = p)
+  res <- new_filter_results(names(res$score), res$score , object, num_pred = p)
   res
 }
