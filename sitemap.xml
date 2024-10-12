@@ -1,51 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_score_vec.html</loc>
-  </url>
-  <url>
-    <loc>/reference/filterdb-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fit_xy.filter_method_corr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_score_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_score_vec.html</loc>
-  </url>
-  <url>
-    <loc>/reference/join_scores.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>/reference/return-direction.html</loc>
-  </url>
-  <url>
-    <loc>/reference/score_vec.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/as_score_vec.html</loc></url>
+<url><loc>/reference/filterdb-package.html</loc></url>
+<url><loc>/reference/fit_xy.filter_method_corr.html</loc></url>
+<url><loc>/reference/get_score_info.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/is_score_vec.html</loc></url>
+<url><loc>/reference/join_scores.html</loc></url>
+<url><loc>/reference/reexports.html</loc></url>
+<url><loc>/reference/return-direction.html</loc></url>
+<url><loc>/reference/score_vec.html</loc></url>
 </urlset>
+
