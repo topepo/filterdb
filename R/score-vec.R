@@ -14,7 +14,7 @@ new_score_vec <-
     stopifnot(is.numeric(impute) && length(impute) == 1L && !is.na(impute))
 
     vctrs::new_vctr(
-      .data = x,
+      .data = unname(x),
       direction = direction,
       impute = impute,
       ...,
@@ -50,6 +50,7 @@ score_vec <-
     check_number_decimal_vec(x, allow_na = TRUE, call = call)
     check_string(direction, call = call)
     check_number_decimal(impute, call = call)
+
     new_score_vec(
       x = x,
       direction = direction,
@@ -62,8 +63,9 @@ score_vec <-
 
 #' @export
 print.score_vec <- function(x, digits = min(getOption("digits"), 3), ...) {
-  print(as.numeric(x), digits = digits, ...)
-  cat("Direction:", direction(x), "\n")
+  print(as.vector(x), digits = digits, ...)
+  cli::cli_inform("Direction: {.val {direction(x)}}")
+  cli::cli_inform("Imputed value: {missing_val(x)}")
   invisible(x)
 }
 
@@ -114,16 +116,6 @@ as_score_vec.default <- function(x, direction = "maximize", impute = Inf) {
 #' @export
 as_score_vec.numeric <- function(x, direction = "maximize", impute = Inf) {
   score_vec(x, direction, impute)
-}
-
-#' @export
-as.numeric.score_vec <- function(x, ...) {
-  as.numeric(unclass(x))
-}
-
-#' @export
-as.double.score_vec <- function(x, ...) {
-  as.double(unclass(x))
 }
 
 # ------------------------------------------------------------------------------

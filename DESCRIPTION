@@ -50,4 +50,5 @@ Collate:
     'join.R'
     'reexports.R'
     'score-vec.R'
+    'vctrs.R'
     'zzz.R'

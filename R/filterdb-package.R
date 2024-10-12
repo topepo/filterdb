@@ -3,6 +3,7 @@
 
 ## usethis namespace: start
 #' @import rlang
+#' @import vctrs
 #' @importFrom stats coef cor setNames as.formula
 ## usethis namespace: end
 NULL
