@@ -194,14 +194,7 @@ impute_score.default <- function(x) {
 
 #' @export
 impute_score.score_vec <- function(x) {
-  # TODO Previously this single line had worked:
-  # x[is.na(x)] <- missing_val(x)
-  if (any(is.na(x))) {
-    att <- attributes(x)
-    x <- as.numeric(x)
-    x[is.na(x)] <- att$impute
-    x <- new_score_vec(x, att$direction, att$impute)
-  }
+  x[is.na(x)] <- missing_val(x)
   x
 }
 
