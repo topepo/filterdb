@@ -1,4 +1,4 @@
-var_types <- c("all", "qualitative", "quantitative")
+var_types <- c("all", "qualitative", "quantitative") # TODO vectors of specific types (eg double, factor)
 goal_types <- c("maximize", "minimize", "maximize_abs", "minimize_abs", "zero")
 
 #' @include import-standalone-obj-type.R import-standalone-types-check.R
