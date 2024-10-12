@@ -1,19 +1,20 @@
 test_that('creating score vectors', {
+  dbl_val <- seq(0, 1, length.out = 3)
 
-  res_1 <- score_vec(1:5)
+  res_1 <- score_vec(dbl_val)
   expect_snapshot(unclass(res_1))
   res_2 <- score_vec(numeric(0))
   expect_snapshot(unclass(res_2))
 
-  expect_snapshot_error(score_vec(letters))
-  expect_snapshot_error(score_vec(1:2, direction = 2))
-  expect_snapshot_error(score_vec(1:2, direction = "bigly"))
-  expect_snapshot_error(score_vec(1:2, direction = NA_character_))
-  expect_snapshot_error(score_vec(1:2, direction = character(0)))
+  expect_snapshot(score_vec(letters), error = TRUE)
+  expect_snapshot(score_vec(dbl_val, direction = 2), error = TRUE)
+  expect_snapshot(score_vec(dbl_val, direction = "bigly"), error = TRUE)
+  expect_snapshot(score_vec(dbl_val, direction = NA_character_), error = TRUE)
+  expect_snapshot(score_vec(dbl_val, direction = character(0)), error = TRUE)
 
-  expect_snapshot_error(score_vec(letters, impute = "yes"))
-  expect_snapshot_error(score_vec(letters, impute = NA_real_))
-  expect_snapshot_error(score_vec(letters, impute = numeric(0)))
+  expect_snapshot(score_vec(letters, impute = "yes"), error = TRUE)
+  expect_snapshot(score_vec(letters, impute = NA_real_), error = TRUE)
+  expect_snapshot(score_vec(letters, impute = numeric(0)), error = TRUE)
 
 })
 
@@ -54,16 +55,16 @@ test_that('score vectors helpers', {
   res_1 <- score_vec(rnorm(3))
 
   expect_snapshot(unclass(as_score_vec(1:5)))
-  expect_snapshot_error(as_score_vec(letters))
+  expect_snapshot(as_score_vec(letters), error = TRUE)
   expect_equal(as.numeric(as_score_vec(1:5)), 1:5)
 
-  expect_snapshot_error(direction(1:3))
+  expect_snapshot(direction(1:3), error = TRUE)
   expect_equal(missing_val(as_score_vec(1:5, "zero", 0)), 0.0)
-  expect_snapshot_error(missing_val(letters))
+  expect_snapshot(missing_val(letters), error = TRUE)
 
   res_2 <- as_score_vec(1:5, "zero", 0)
   res_3 <- as_score_vec(c(1:5, NA_real_), "zero", 0)
-  expect_snapshot_error(impute_score(letters))
+  expect_snapshot(impute_score(letters), error = TRUE)
   expect_equal(impute_score(res_2), res_2)
   expect_equal(impute_score(res_3), as_score_vec(c(1:5, 0.0), "zero", 0))
 

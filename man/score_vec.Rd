@@ -4,7 +4,12 @@
 \alias{score_vec}
 \title{Create a filter score object}
 \usage{
-score_vec(x = numeric(), direction = "maximize", impute = Inf)
+score_vec(
+  x = numeric(),
+  direction = "maximize",
+  impute = Inf,
+  call = rlang::caller_env()
+)
 }
 \arguments{
 \item{x}{A numeric vector..}
@@ -14,9 +19,14 @@ score_vec(x = numeric(), direction = "maximize", impute = Inf)
 
 \item{impute}{A single numeric value for when values are missing. This should
 be a value that indicates that a variable \emph{should not} be removed.}
+
+\item{call}{The execution environment of a currently running function, e.g.
+\code{caller_env()}. The function will be mentioned in error messages as the
+source of the error. See the call argument of \code{\link[rlang:abort]{rlang::abort()}} for more
+information.}
 }
 \description{
-\code{score_vec()} creates a \code{score_vec} object from a numeric vector. The
+\code{score_vec()} creates a \code{score_vec} object from a double vector. The
 direction of best result (e.g. maximization) can be set along with a numeric
 value to use when the value cannot be computed.
 }

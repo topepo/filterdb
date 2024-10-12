@@ -1,38 +1,17 @@
-# Tools for a common API for filtering predictors
-
-# ------------------------------------------------------------------------------
-# Constructors
-
-new_filter_method <- function(name, label, goal = "maximize",
-                              inputs = "all", outputs = "all",
-                              pkgs = character(0)) {
-
-  # name: a keyword used in other steps (e.g. imp_rf? or similar)
-  if (!is.character(name) || length(name) != 1) {
-    rlang::abort("'name' should be a 1 element character vector.")
-  }
-
-  # ----------------------------------------------------------------------------
-  # label: for printing ("random forest variable importance")
-  if (!is.character(label) || length(label) != 1) {
-    rlang::abort("'label' should be a 1 element character vector.")
-  }
-
-  # ----------------------------------------------------------------------------
-
-  goal <- rlang::arg_match0(goal, c("maximize", "minimize", "zero"))
-
-  # ----------------------------------------------------------------------------
-  # Specifications for inputs and output variables
-  # Maybe these should be more specific (e.g. "factor", "numeric", etc).
-  # Should also specify max levels for factor inputs or outputs?
-  inputs  <- rlang::arg_match0(inputs,  c("all", "qualitative", "quantitative"))
-  outputs <- rlang::arg_match0(outputs, c("all", "qualitative", "quantitative"))
-
-  # ----------------------------------------------------------------------------
-  # pkgs: character string of external packages used to compute the filter
+#' @include import-standalone-obj-type.R import-standalone-types-check.R
+#' @keywords internal
+#' @export
+new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = character(0),
+                              call = rlang::caller_env()) {
+  var_types <- c("all", "qualitative", "quantitative")
+  goal_types <- c("maximize", "minimize", "zero")
+  check_string(name, allow_empty = FALSE, call = call)
+  check_string(label, allow_empty = FALSE, call = call)
+  goal <- rlang::arg_match0(goal, goal_types, error_call = call)
+  inputs  <- rlang::arg_match0(inputs, var_types , error_call = call)
+  outputs <- rlang::arg_match0(outputs, var_types, error_call = call)
   if (!is.character(pkgs)) {
-    rlang::abort("'pkgs' should be a character vector.")
+    cli::cli_abort("'pkgs' should be a character vector.", call = call)
   }
 
   # maybe also set default arguments and a list that can't be altered by the user?
@@ -50,23 +29,24 @@ new_filter_method <- function(name, label, goal = "maximize",
   res
 }
 
-new_filter_results <- function(predictors, results, object, num_pred, rename = FALSE) {
+# TODO case weights :-(
+
+new_filter_results <- function(predictors, results, object, num_pred, rename = FALSE,
+                               call = rlang::caller_env()) {
   # check dims and types
    if (!is.character(predictors)) {
-     rlang::abort("'predictors' should be a character vector")
+     cli::cli_abort("{.arg predictors} should be a character vector", call = call)
    }
   if (!is.numeric(results)) {
-    rlang::abort("'results' should be a numeric vector")
+    cli::cli_abort("{.arg results} should be a numeric vector", call = call)
   }
   if (length(predictors) != length(results)) {
-    rlang::abort("'results' and 'predictors' should be the same length")
+    cli::cli_abort("{.arg results} and {.arg predictors} should be the same length", call = call)
   }
   if (length(predictors) != num_pred) {
-    msg <- paste(
-      "'results' and 'predictors' should be the same length and the number of",
-      "original predictors"
-    )
-    rlang::abort(msg)
+    cli::cli_abort("{.arg results} and {.arg predictors} should be the same
+                   length and the number of original predictors",
+                   call = call)
   }
 
   # ------------------------------------------------------------------------------
@@ -115,26 +95,24 @@ is_bad_type<- function(data, type) {
   is_bad_type
 }
 
-validate_filter_data <- function(object, x, y) {
+validate_filter_data <- function(object, x, y, call) {
   if (!is.data.frame(y)) {
-    rlang::abort("'y' should be a data frame.")
+    cli::cli_abort("{.arg y} should be a data frame.", call = call)
   }
   if (nrow(x) != nrow(y)) {
-    rlang::abort("The number of rows in 'x' and 'y' are not the same.")
+    cli::cli_abort("The number of rows in {.arg x} and {.arg y} are not the same.", call = call)
   }
   if (ncol(y) > 1) {
-    rlang::abort("Filters only support single outcome methods.")
+    cli::cli_abort("Filters only support single outcome methods.", call = call)
   }
 
   bad_x <- is_bad_type(x, object$inputs)
   if (any(bad_x)) {
-    msg <- paste("There are predictor columns that are not", object$inputs)
-    rlang::abort(msg)
+    cli::cli_abort("There are predictor columns that are not {object$inputs}", call = call)
   }
   bad_y <- is_bad_type(y, object$outputs)
   if (any(bad_y)) {
-    msg <- paste("There are outcome columns that are not", object$outputs)
-    rlang::abort(msg)
+    cli::cli_abort("There are outcome columns that are not {object$outputs}",  call = call)
   }
   invisible(NULL)
 }
@@ -172,7 +150,17 @@ goal_to_impute <- function(x) {
   } else if (x$goal == "zero") {
     res <- 0.0
   } else {
-    rlang::abort(paste0("Cannot have a score goal of '", x$goal, "'"))
+    cli::cli_abort("Cannot have a score goal of {x$goal}", call = call)
   }
   res
+}
+
+check_number_decimal_vec <- function(x, ..., call = rlang::caller_env()) {
+  if (!is.vector(x)) {
+    cli::cli_abort("Value should be a vector.", call = call)
+  }
+  for (i in x) {
+    check_number_decimal(i, ...)
+  }
+  invisible(NULL)
 }

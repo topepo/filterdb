@@ -4,9 +4,9 @@
 # value into the numeric vector.
 
 new_score_vec <-
-  function(x, direction = "maximize", impute = Inf, ..., subclass = NULL) {
-
-    stopifnot(is.numeric(x))
+  function(x, direction = "maximize", impute = Inf, ..., subclass = NULL,
+           call = rlang::caller_env()) {
+    check_number_decimal_vec(x, allow_na = TRUE, call = call)
 
     stopifnot(is.character(direction) && length(direction) == 1L && !is.na(direction))
     direction <- rlang::arg_match0(direction, c("maximize", "minimize", "zero"))
@@ -25,7 +25,7 @@ new_score_vec <-
 
 #' Create a filter score object
 #'
-#' `score_vec()` creates a `score_vec` object from a numeric vector. The
+#' `score_vec()` creates a `score_vec` object from a double vector. The
 #' direction of best result (e.g. maximization) can be set along with a numeric
 #' value to use when the value cannot be computed.
 #'
@@ -37,30 +37,19 @@ new_score_vec <-
 #' "minimize", or "zero".
 #' @param impute A single numeric value for when values are missing. This should
 #' be a value that indicates that a variable _should not_ be removed.
-#'
+#' @param call The execution environment of a currently running function, e.g.
+#'   `caller_env()`. The function will be mentioned in error messages as the
+#'   source of the error. See the call argument of [rlang::abort()] for more
+#'   information.
 #' @examples
 #' set.seed(1)
 #' score_vec(rnorm(10), "zero")
 #' @export
 score_vec <-
-  function(x = numeric(),
-           direction = "maximize",
-           impute = Inf) {
-
-    # Check invariants
-    if(!is.numeric(x)) {
-      rlang::abort("`x` must be numeric.")
-    }
-
-    if(!rlang::is_scalar_character(direction)) {
-      rlang::abort("`direction` must be a length 1 character.")
-    }
-    if(!rlang::is_scalar_integer(impute) & !rlang::is_scalar_double(impute)) {
-      rlang::abort("`impute` must be a length 1 numeric")
-    }
-
-    x <- as.numeric(unclass(x))
-
+  function(x = numeric(), direction = "maximize", impute = Inf, call = rlang::caller_env()) {
+    check_number_decimal_vec(x, allow_na = TRUE, call = call)
+    check_string(direction, call = call)
+    check_number_decimal(impute, call = call)
     new_score_vec(
       x = x,
       direction = direction,
@@ -111,14 +100,10 @@ as_score_vec <- function(x, direction = "maximize", impute = Inf) {
   UseMethod("as_score_vec")
 }
 
-quote_collapse <- function(x, quote = "`", collapse = ", ") {
-  paste(encodeString(x, quote = quote), collapse = collapse)
-}
-
-abort_default <- function(x, fn) {
-  cls <- quote_collapse(class(x))
-  msg <- paste0("No implementation of `", fn, "()` for object of class ", cls, ".")
-  rlang::abort(msg)
+abort_default <- function(x, fn, call = rlang::caller_env()) {
+  cls <- class(x)
+  cli::cli_abort("No implementation of {.fn {fn}} for object of class {.val {cls}}.",
+                 call = call)
 }
 
 #' @export
@@ -217,7 +202,14 @@ impute_score.default <- function(x) {
 
 #' @export
 impute_score.score_vec <- function(x) {
-  x[is.na(x)] <- missing_val(x)
+  # TODO Previously this single line had worked:
+  # x[is.na(x)] <- missing_val(x)
+  if (any(is.na(x))) {
+    att <- attributes(x)
+    x <- as.numeric(x)
+    x[is.na(x)] <- att$impute
+    x <- new_score_vec(x, att$direction, att$impute)
+  }
   x
 }
 

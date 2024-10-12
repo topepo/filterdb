@@ -4,13 +4,18 @@
 \alias{join_scores}
 \title{Combine filter results}
 \usage{
-join_scores(..., .impute = FALSE)
+join_scores(..., .impute = FALSE, call = rlang::caller_env())
 }
 \arguments{
 \item{...}{A set of objects with class \code{filter_method}.}
 
 \item{.impute}{A single logical to indicate whether missing data are converted
 to a value that implies that a variable should be retained.}
+
+\item{call}{The execution environment of a currently running function, e.g.
+\code{caller_env()}. The function will be mentioned in error messages as the
+source of the error. See the call argument of \code{\link[rlang:abort]{rlang::abort()}} for more
+information.}
 }
 \description{
 Joins different results across variables.

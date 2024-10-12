@@ -3,7 +3,7 @@
     Code
       unclass(res_1)
     Output
-      [1] 1 2 3 4 5
+      [1] 0.0 0.5 1.0
       attr(,"direction")
       [1] "maximize"
       attr(,"impute")
@@ -22,35 +22,67 @@
 
 ---
 
-    `x` must be numeric.
+    Code
+      score_vec(letters)
+    Condition
+      Error in `check_number_decimal_vec()`:
+      ! `i` must be a number or `NA`, not the string "a".
 
 ---
 
-    `direction` must be a length 1 character.
+    Code
+      score_vec(dbl_val, direction = 2)
+    Condition
+      Error:
+      ! `direction` must be a single string, not the number 2.
 
 ---
 
-    `direction` must be one of "maximize", "minimize", or "zero", not "bigly".
+    Code
+      score_vec(dbl_val, direction = "bigly")
+    Condition
+      Error in `new_score_vec()`:
+      ! `direction` must be one of "maximize", "minimize", or "zero", not "bigly".
 
 ---
 
-    is.character(direction) && length(direction) == 1L && !is.na(direction) is not TRUE
+    Code
+      score_vec(dbl_val, direction = NA_character_)
+    Condition
+      Error:
+      ! `direction` must be a single string, not a character `NA`.
 
 ---
 
-    `direction` must be a length 1 character.
+    Code
+      score_vec(dbl_val, direction = character(0))
+    Condition
+      Error:
+      ! `direction` must be a single string, not an empty character vector.
 
 ---
 
-    `x` must be numeric.
+    Code
+      score_vec(letters, impute = "yes")
+    Condition
+      Error in `check_number_decimal_vec()`:
+      ! `i` must be a number or `NA`, not the string "a".
 
 ---
 
-    `x` must be numeric.
+    Code
+      score_vec(letters, impute = NA_real_)
+    Condition
+      Error in `check_number_decimal_vec()`:
+      ! `i` must be a number or `NA`, not the string "a".
 
 ---
 
-    `x` must be numeric.
+    Code
+      score_vec(letters, impute = numeric(0))
+    Condition
+      Error in `check_number_decimal_vec()`:
+      ! `i` must be a number or `NA`, not the string "a".
 
 # printing score vectors
 
@@ -95,17 +127,33 @@
 
 ---
 
-    No implementation of `as_score_vec()` for object of class `character`.
+    Code
+      as_score_vec(letters)
+    Condition
+      Error in `as_score_vec()`:
+      ! No implementation of `as_score_vec()` for object of class "character".
 
 ---
 
-    No implementation of `direction()` for object of class `integer`.
+    Code
+      direction(1:3)
+    Condition
+      Error in `direction()`:
+      ! No implementation of `direction()` for object of class "integer".
 
 ---
 
-    No implementation of `missing_val()` for object of class `character`.
+    Code
+      missing_val(letters)
+    Condition
+      Error in `missing_val()`:
+      ! No implementation of `missing_val()` for object of class "character".
 
 ---
 
-    No implementation of `impute_score()` for object of class `character`.
+    Code
+      impute_score(letters)
+    Condition
+      Error in `impute_score()`:
+      ! No implementation of `impute_score()` for object of class "character".
 

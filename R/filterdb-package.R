@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @import rlang
 #' @importFrom stats coef cor setNames as.formula
 ## usethis namespace: end
 NULL
