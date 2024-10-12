@@ -9,8 +9,9 @@ new_filter_method <- function(name, label, goal, inputs, outputs, pkgs = charact
   check_string(name, allow_empty = FALSE, call = call)
   check_string(label, allow_empty = FALSE, call = call)
   goal <- rlang::arg_match0(goal, goal_types, error_call = call)
-  inputs  <- rlang::arg_match0(inputs, var_types , error_call = call)
-  outputs <- rlang::arg_match0(outputs, var_types, error_call = call)
+  # inputs  <- rlang::arg_match0(inputs, var_types , error_call = call)
+  # outputs <- rlang::arg_match0(outputs, var_types, error_call = call)
+
   if (!is.character(pkgs)) {
     cli::cli_abort("'pkgs' should be a character vector.", call = call)
   }
@@ -53,8 +54,10 @@ new_filter_results <- function(predictors, results, object, num_pred, rename = F
 
   # ------------------------------------------------------------------------------
 
-  imp_val <- goal_to_impute(object)
-  results <- new_score_vec(results, direction = object$goal, impute = imp_val)
+  if (!is_score_vec(results)) {
+    cli::cli_abort("The scores must be a {.val score_vec} object.", call = call)
+  }
+
   res <- dplyr::tibble(variable = predictors, score = results)
 
   # TODO make some sort of S3 method here (transform and/or ranking) There is a
@@ -90,7 +93,7 @@ is_qual <- function(x) {
 }
 
 is_quant <- function(x) {
-  inherits(x, c("numeric", "double", "integer"))
+  inherits(x, c("double", "integer"))
 }
 
 is_bad_type<- function(data, type) {
@@ -179,4 +182,11 @@ transform_score <- function(x, goal) {
     x <- abs(x)
   }
   x
+}
+
+filter_methods <- function() {
+  fit_methods <- as.character(.S3methods("fit_xy"))
+  fit_methods <- grep("fit_xy.filter_method_", fit_methods, value = TRUE)
+  fit_methods <- gsub("fit_xy.filter_method_", "", fit_methods)
+  fit_methods
 }

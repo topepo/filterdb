@@ -1,0 +1,67 @@
+
+# TODO quick zv scan?
+# TODO check binary outcome class?
+
+check_data_for_filters <- function(info, x, y, call) {
+  correct_data <-
+    map_lgl(info,
+            ~ check_data_for_method(.x, x, y, verbose = TRUE, call = call))
+  if (!any(correct_data)) {
+    cli::cli_abort("There were no appropriate columns for any filter", call = call)
+  }
+  info[correct_data]
+}
+
+has_data_for_method <- function(mthd, x, y) {
+  pred_cls <- mthd$inputs
+  pred_cols <- has_data_classes(x, pred_cls)
+
+  outcome_cls <- mthd$outputs
+  outcome_cols <- has_data_classes(y, outcome_cls)
+  # check for 2+ outcomes and fail
+
+  list(predictors = pred_cols, outcomes = outcome_cols)
+}
+
+
+check_data_for_method <- function(mthd, x, y, verbose = TRUE,
+                                  call = rlang::caller_env()) {
+  res <- has_data_for_method(mthd, x, y)
+
+  has_predictors <- length(res$predictors) > 0
+  has_outcomes <- length(res$outcomes) > 0
+
+  data_ok <- has_predictors & has_outcomes
+
+  if (!verbose) {
+    return(data_ok)
+  }
+
+  if (!has_predictors & !has_outcomes) {
+    cli::cli_warn("There are no predictors with class(es)
+                   {.val {mthd$inputs}} and no outcomes with class(es)
+                   {.val {mthd$outputs}}.", call = call)
+  } else if (!has_predictors) {
+    cli::cli_warn("There are no predictors with class(es) {.val {mthd$inputs}}.",
+                  call = call)
+  } else if (!has_outcomes) {
+    cli::cli_warn("There are no outcomes with class(es) {.val {mthd$outputs}}.",
+                  call = call)
+  }
+
+  data_ok
+}
+
+has_col_class <- function(x, cls) {
+  inherits(x, cls)
+}
+
+has_data_classes <- function(.data, cls) {
+  res <- purrr:::map_lgl(.data, ~ has_col_class(.x, cls))
+  names(res)[res]
+}
+
+check_data_classes <- function(.data, cls) {
+  has_cls <- has_data_classes(.data, cls)
+  length(has_cls) > 0
+}

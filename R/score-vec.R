@@ -9,7 +9,7 @@ new_score_vec <-
     check_number_decimal_vec(x, allow_na = TRUE, call = call)
 
     stopifnot(is.character(direction) && length(direction) == 1L && !is.na(direction))
-    direction <- rlang::arg_match0(direction, c("maximize", "minimize", "zero"))
+    direction <- rlang::arg_match0(direction, goal_types)
 
     stopifnot(is.numeric(impute) && length(impute) == 1L && !is.na(impute))
 

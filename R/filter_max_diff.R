@@ -6,8 +6,8 @@ filter_max_diff <-
     name = "max_diff",
     label = "Maximum Group Difference",
     goal = "maximize",
-    inputs = "qualitative",
-    outputs = "all"
+    inputs = "factor",
+    outputs = c("double", "integer", "factor")
   )
 
 comp_max_diff <- function(x, y) {
@@ -32,11 +32,14 @@ comp_max_diff <- function(x, y) {
 fit_xy.filter_method_max_diff <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   p <- ncol(x)
 
   res <- purrr::map_dbl(x, ~ comp_max_diff(.x, y = y[[1]]))
-  res <- new_filter_results(names(x), res, object, rename = rename, num_pred = p)
+  score <- new_score_vec(unname(res), direction = "maximize_abs", impute = Inf)
+  res <- new_filter_results(names(x), score, object, rename = rename, num_pred = p)
   res
 }

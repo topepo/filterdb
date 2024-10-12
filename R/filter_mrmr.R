@@ -6,8 +6,8 @@ filter_mrmr <-
     name = "mrmr",
     label = "Minimum Redundancy Maximal Relevancy Filter",
     goal = "maximize", # TODO encode this in the score vector
-    inputs = "all",
-    outputs = "qualitative",
+    inputs = c("double", "integer", "factor"),
+    outputs = "factor",
     pkgs = "praznik"
   )
 
@@ -15,10 +15,10 @@ filter_mrmr <-
 #' @export
 fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
-  if (is.vector(y)) { # TODO do these outside of these functions
-    y <- dplyr::as_tibble(y)
-  }
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
+
   # TODO convert ints in 'x' to doubles. See ?praznik::MRMR
 
   y <- y[[1]]
@@ -36,8 +36,10 @@ fit_xy.filter_method_mrmr <- function(object, x, y, rename = FALSE, ...) {
     res$score <- rep(NA_real_, p)
     names(res) <- names(x)
   }
+  predictors <- names(res$score)
+  res$score <- new_score_vec(unname(res$score), direction = "maximize", impute = Inf)
 
-  res <- new_filter_results(names(res$score), unname(res$score), object,
-                          rename = rename, num_pred = p)
+  res <- new_filter_results(names(res$score), res$score , object,
+                            rename = rename, num_pred = p)
   res
 }

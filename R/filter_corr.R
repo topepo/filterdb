@@ -1,14 +1,13 @@
 # ------------------------------------------------------------------------------
 # Correlation filters
 
-
 filter_corr <-
   new_filter_method(
     name = "corr",
     label = "Correlation Filter",
     goal = "maximize",
-    inputs = "quantitative",
-    outputs = "quantitative"
+    inputs = c("double", "integer"),
+    outputs = c("double", "integer")
   )
 
 #' Execute a supervised filter
@@ -27,14 +26,18 @@ filter_corr <-
 fit_xy.filter_method_corr <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   p <- ncol(x)
 
   res <- cor(dplyr::bind_cols(y, x), use = "pairwise.complete.obs", ...)
   res <- abs(res[1, -1])
 
-  res <- new_filter_results(names(x), res, object, rename = rename, num_pred = p)
+  score <- new_score_vec(unname(res), direction = "maximize_abs", impute = 1.0)
+
+  res <- new_filter_results(names(x), score, object, rename = rename, num_pred = p)
   res
 }
 

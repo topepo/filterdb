@@ -7,8 +7,8 @@ filter_info_gain <-
     name = "info_gain",
     label = "Information Gain",
     goal = "maximize",
-    inputs = "all",
-    outputs = "qualitative",
+    inputs = c("double", "integer", "factor"),
+    outputs = "factor",
     pkgs = "FSelectorRcpp"
   )
 
@@ -17,7 +17,7 @@ filter_info_gain <-
 fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  # validate_filter_data(object, x, y)
 
   y <- y[[1]]
   p <- ncol(x)
@@ -51,8 +51,8 @@ filter_info_gain_ratio <-
     name = "info_gain_ratio",
     label = "Information Gain Ratio",
     goal = "maximize",
-    inputs = "all",
-    outputs = "qualitative",
+    inputs = c("double", "integer", "factor"),
+    outputs = "factor",
     pkgs = "FSelectorRcpp"
   )
 
@@ -61,7 +61,7 @@ filter_info_gain_ratio <-
 fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  # validate_filter_data(object, x, y)
 
   y <- y[[1]]
   p <- ncol(x)
@@ -95,8 +95,8 @@ filter_mic <-
     name = "mic",
     label = "Maximal Information Coefficient",
     goal = "maximize",
-    inputs = "quantitative",
-    outputs = "quantitative",
+    inputs = c("double", "integer"),
+    outputs = c("double", "integer"),
     pkgs = "minerva"
   )
 
@@ -105,7 +105,7 @@ filter_mic <-
 fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  # validate_filter_data(object, x, y)
 
   x <- as.matrix(x)
   y <- y[[1]]

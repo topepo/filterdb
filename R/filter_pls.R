@@ -5,8 +5,8 @@ filter_imp_pls <-
     name = "imp_pls",
     label = "Partial Least Squares Variable Importance",
     goal = "maximize",
-    inputs = "quantitative",
-    outputs = "all",
+    inputs = c("double", "integer"),
+    outputs = c("double", "integer", "factor"),
     pkgs = "mixOmics"
   )
 
@@ -15,7 +15,9 @@ filter_imp_pls <-
 fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   p <- ncol(x)
 
@@ -42,11 +44,12 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
       names(res) <- nms
     }
   }
+  score <- new_score_vec(unname(res), direction = "maximize", impute = Inf)
 
   res <-
     new_filter_results(
       names(res),
-      unname(res),
+      score,
       object,
       rename = rename,
       num_pred = p

@@ -6,8 +6,8 @@ filter_imp_rf <-
     name = "imp_rf",
     label = "Random Forest Variable Importance",
     goal = "maximize",
-    inputs = "all",
-    outputs = "all",
+    inputs = c("double", "integer", "factor"),
+    outputs = c("double", "integer", "factor"),
     pkgs = "ranger"
   )
 
@@ -17,7 +17,9 @@ fit_xy.filter_method_imp_rf <- function(object, x, y, rename = FALSE,
                                         seed = sample.int(1000, 1), ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   y <- y[[1]]
   p <- ncol(x)
@@ -33,10 +35,12 @@ fit_xy.filter_method_imp_rf <- function(object, x, y, rename = FALSE,
     names(res$variable.importance) <- names(x)
   }
 
+  scores <- score_vec(unname(res$variable.importance), impute = Inf)
+
   res <-
     new_filter_results(
       names(res$variable.importance),
-      unname(res$variable.importance),
+      scores,
       object,
       rename = rename,
       num_pred = p
@@ -52,8 +56,8 @@ filter_imp_crf <-
     name = "imp_crf",
     label = "Random Forest Variable Importance (Conditional Inference)",
     goal = "maximize",
-    inputs = "all",
-    outputs = "all",
+    inputs = c("double", "integer", "factor"),
+    outputs = c("double", "integer", "factor"),
     pkgs = "party"
   )
 
@@ -63,7 +67,10 @@ fit_xy.filter_method_imp_crf <- function(object, x, y, rename = FALSE,
                                          seed = sample.int(1000, 1), ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
+
   dat <- dplyr::bind_cols(x, y)
   f <- paste0(names(y), "~.")
   f <- as.formula(f)
@@ -87,10 +94,12 @@ fit_xy.filter_method_imp_crf <- function(object, x, y, rename = FALSE,
     }
   }
 
+  scores <- score_vec(unname(res), impute = Inf)
+
   res <-
     new_filter_results(
       names(res),
-      unname(res),
+      scores,
       object,
       rename = rename,
       num_pred = p
