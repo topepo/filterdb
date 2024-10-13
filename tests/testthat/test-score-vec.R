@@ -18,7 +18,6 @@ test_that('creating score vectors', {
 
 })
 
-
 test_that('printing score vectors', {
 
   set.seed(1)
@@ -30,7 +29,6 @@ test_that('printing score vectors', {
   expect_snapshot(obj_sum(res_1))
 
 })
-
 
 test_that('score vectors in filter results', {
   skip_if_not_installed("modeldata")
@@ -47,7 +45,6 @@ test_that('score vectors in filter results', {
   expect_equal(missing_val(corr_res$score), 1.0)
 
 })
-
 
 test_that('score vectors helpers', {
 

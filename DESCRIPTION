@@ -48,7 +48,6 @@ Collate:
     'filter_roc_auc.R'
     'filterdb-package.R'
     'importance_metrics.R'
-    'reexports.R'
     'score-vec.R'
     'vctrs.R'
     'zzz.R'
