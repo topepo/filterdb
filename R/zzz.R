@@ -1,3 +1,4 @@
+# nocov start
 
 .onLoad <- function(libname, pkgname) {
 
