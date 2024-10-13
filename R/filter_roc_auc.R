@@ -29,6 +29,8 @@ roc_wrapper <- function(x, y, ...) {
 #' @rdname fit_xy.filter_method_corr
 #' @export
 fit_xy.filter_method_roc_auc <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
+
   # check empty dots
   # case weights? event_level?
   x <- dplyr::as_tibble(x)

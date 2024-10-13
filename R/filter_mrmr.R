@@ -17,6 +17,7 @@ filter_mrmr <-
 #' @export
 #' @keywords internal
 fit_xy.filter_method_mrmr <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   cols <- has_data_for_method(object, x, y)
   x <- x[, cols$predictors]

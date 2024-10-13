@@ -14,6 +14,7 @@ filter_info_gain <-
 #' @export
 #' @keywords internal
 fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -64,6 +65,7 @@ filter_info_gain_ratio <-
 #' @export
 #' @keywords internal
 fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -118,6 +120,7 @@ filter_mic <-
 #' @export
 #' @keywords internal
 fit_xy.filter_method_mic <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)

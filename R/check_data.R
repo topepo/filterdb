@@ -40,12 +40,14 @@ check_data_for_method <- function(mthd, x, y, verbose = TRUE,
   if (!has_predictors & !has_outcomes) {
     cli::cli_warn("There are no predictors with class(es)
                    {.val {mthd$predictor_types}} and no outcomes with class(es)
-                   {.val {mthd$outcome_types}}.", call = call)
+                   {.val {mthd$outcome_types}} for {mthd$label}.", call = call)
   } else if (!has_predictors) {
-    cli::cli_warn("There are no predictors with class(es) {.val {mthd$predictor_types}}.",
+    cli::cli_warn("There are no predictors with class(es)
+                  {.val {mthd$predictor_types}} for {mthd$label}.",
                   call = call)
   } else if (!has_outcomes) {
-    cli::cli_warn("There are no outcomes with class(es) {.val {mthd$outcome_types}}.",
+    cli::cli_warn("There are no outcomes with class(es)
+                  {.val {mthd$outcome_types}} for {mthd$label}.",
                   call = call)
   }
 
@@ -83,9 +85,12 @@ check_num_classes <- function(x, num_lvls = 2) {
   length(levels(x)) == num_lvls
 }
 
-check_two_class <- function(x, num_vals = 5) {
+check_unique_values <- function(x, num_vals = 5) {
   vctrs::vec_unique_count(x) >= num_vals
 }
 
+check_not_multiclass <- function(x) {
+  # for regression and binary classification only
+}
 
 

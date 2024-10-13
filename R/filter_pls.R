@@ -14,6 +14,7 @@ filter_imp_pls <-
 #' @export
 #' @keywords internal
 fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)

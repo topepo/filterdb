@@ -29,6 +29,7 @@ comp_max_diff <- function(x, y) {
 #' @rdname fit_xy.filter_method_corr
 #' @export
 fit_xy.filter_method_max_diff <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
