@@ -68,14 +68,6 @@ check_number_decimal_vec <- function(x, ..., call = rlang::caller_env()) {
   invisible(NULL)
 }
 
-# TODO add this somewhere
-transform_score <- function(x, goal) {
-  if (grepl("abs$", goal) | goal == "zero") {
-    x <- abs(x)
-  }
-  x
-}
-
 #' Find available importance filters
 #'
 #' This function shows the methods that can be used with [importance_metrics()].
