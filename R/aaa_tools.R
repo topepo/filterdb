@@ -3,10 +3,12 @@ goal_types <- c("maximize", "minimize", "maximize_abs", "minimize_abs", "zero")
 #' @include import-standalone-obj-type.R import-standalone-types-check.R
 #' @keywords internal
 #' @export
-new_filter_method <- function(name, label, predictor_types, outcome_types, pkgs = character(0),
+new_filter_method <- function(name, label, predictor_types, outcome_types,
+                              case_weights, pkgs = character(0),
                               call = rlang::caller_env()) {
   check_string(name, allow_empty = FALSE, call = call)
   check_string(label, allow_empty = FALSE, call = call)
+  check_logical(case_weights, allow_empty = FALSE, call = call)
 
   if (!is.character(pkgs)) {
     cli::cli_abort("'pkgs' should be a character vector.", call = call)
@@ -20,11 +22,32 @@ new_filter_method <- function(name, label, predictor_types, outcome_types, pkgs 
       label = tools::toTitleCase(label),
       predictor_types = predictor_types,
       outcome_types = outcome_types,
+      case_weights = case_weights,
       pkgs = pkgs
     )
   class(res) <- c(paste0("filter_method_", name), "filter_method")
   res
 }
+
+#' @export
+print.filter_method <- function(x, ...) {
+  cli::cli_inform("{x$label} filter")
+  cat("\n")
+  cli::cli_bullets(c("i" = "Predictor types: {x$predictor_types}"))
+  cli::cli_bullets(c("i" = "Outcome types: {x$predictor_types}"))
+  pkgs <- x$pkgs
+  if (length(pkgs) == 0) {
+    pkgs <- "<none>"
+  }
+  cli::cli_bullets(c("i" = "Required packages: {pkgs}"))
+  if (x$case_weights) {
+    cli::cli_bullets(c("v" = "Case weights allowed"))
+  } else {
+    cli::cli_bullets(c("x" = "Case weights not allowed"))
+  }
+  invisible(x)
+}
+
 
 # TODO case weights :-(
 

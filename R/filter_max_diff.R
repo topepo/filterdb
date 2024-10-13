@@ -1,12 +1,12 @@
-# ------------------------------------------------------------------------------
-# Max difference in the outcome between groups of a factor predictor
-
+#' ANOVA filters
+#' @export
 filter_max_diff <-
   new_filter_method(
     name = "max_diff",
     label = "Maximum Group Difference",
     predictor_types = "factor",
-    outcome_types = c("double", "integer", "factor")
+    outcome_types = c("numeric", "double", "integer", "factor"),
+    case_weights = TRUE
   )
 
 comp_max_diff <- function(x, y) {

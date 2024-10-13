@@ -1,16 +1,18 @@
-# PLS methods
-
+#' Partial least squares importance filters
+#' @export
 filter_imp_pls <-
   new_filter_method(
     name = "imp_pls",
     label = "Partial Least Squares Variable Importance",
     predictor_types = c("numeric", "double", "integer"),
-    outcome_types = c("double", "integer", "factor"),
-    pkgs = "mixOmics"
+    outcome_types = c("numeric", "double", "integer", "factor"),
+    pkgs = "mixOmics",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
+#' @keywords internal
 fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)

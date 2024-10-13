@@ -16,11 +16,12 @@ top_p <- 10
 data(ames)
 ames$Sale_Price <- log10(ames$Sale_Price)
 
-is_num <- map_lgl(ames %>% select(-Sale_Price), is.numeric)
-cols_num <- names(is_num)[is_num]
-
-is_fac <- map_lgl(ames, is.factor)
-cols_fac <- names(is_fac)[is_fac]
+ames_scores <-
+  importance_metrics(
+    ames %>% select(-Sale_Price),
+    y = ames %>% select(Sale_Price),
+    methods = c("corr", "corr_rank", "imp_rf")
+  )
 
 # ------------------------------------------------------------------------------
 # filters for numeric predictors

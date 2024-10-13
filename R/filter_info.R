@@ -1,18 +1,18 @@
-# ------------------------------------------------------------------------------
-# Information
-
-
+#' Information theory filters
+#' @export
 filter_info_gain <-
   new_filter_method(
     name = "info_gain",
     label = "Information Gain",
-    predictor_types = c("double", "integer", "factor"),
+    predictor_types = c("numeric", "double", "integer", "factor"),
     outcome_types = "factor",
-    pkgs = "FSelectorRcpp"
+    pkgs = "FSelectorRcpp",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
+#' @keywords internal
 fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
@@ -48,17 +48,21 @@ fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
 
 ###
 
+#' @rdname filter_info_gain
+#' @export
 filter_info_gain_ratio <-
   new_filter_method(
     name = "info_gain_ratio",
     label = "Information Gain Ratio",
-    predictor_types = c("double", "integer", "factor"),
+    predictor_types = c("numeric", "double", "integer", "factor"),
     outcome_types = "factor",
-    pkgs = "FSelectorRcpp"
+    pkgs = "FSelectorRcpp",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
+#' @keywords internal
 fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
@@ -98,17 +102,21 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
 
 ###
 
+#' @rdname filter_info_gain
+#' @export
 filter_mic <-
   new_filter_method(
     name = "mic",
     label = "Maximal Information Coefficient",
     predictor_types = c("numeric", "double", "integer"),
     outcome_types = c("numeric", "double", "integer"),
-    pkgs = "minerva"
+    pkgs = "minerva",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
+#' @keywords internal
 fit_xy.filter_method_mic <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)

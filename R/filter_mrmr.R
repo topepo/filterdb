@@ -1,17 +1,21 @@
 # ------------------------------------------------------------------------------
-# Minimum Redundancy Maximal Relevancy Filter
+#
 
+#' Minimum Redundancy Maximal Relevancy filter
+#' @export
 filter_mrmr <-
   new_filter_method(
     name = "mrmr",
     label = "Minimum Redundancy Maximal Relevancy Filter",
-    predictor_types = c("double", "integer", "factor"),
+    predictor_types = c("numeric", "double", "integer", "factor"),
     outcome_types = "factor",
-    pkgs = "praznik"
+    pkgs = "praznik",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
+#' @keywords internal
 fit_xy.filter_method_mrmr <- function(object, x, y, ...) {
   x <- dplyr::as_tibble(x)
   cols <- has_data_for_method(object, x, y)

@@ -56,3 +56,4 @@ score values.
 \description{
 Execute a single supervised filter
 }
+\keyword{internal}

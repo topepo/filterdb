@@ -66,6 +66,17 @@ check_data_classes <- function(.data, cls) {
   length(has_cls) > 0
 }
 
+apply_data_filters <- function(info, x, y) {
+  # TODO check for data frame y with 1 column
+  x <- dplyr::as_tibble(x)
+  y <- dplyr::as_tibble(y)
+  cols <- has_data_for_method(info, x, y)
+  # TODO cli stops when needed
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
+  list(x = x, y = y)
+}
+
 # ------------------------------------------------------------------------------
 
 check_num_classes <- function(x, num_lvls = 2) {
@@ -75,3 +86,6 @@ check_num_classes <- function(x, num_lvls = 2) {
 check_two_class <- function(x, num_vals = 5) {
   vctrs::vec_unique_count(x) >= num_vals
 }
+
+
+

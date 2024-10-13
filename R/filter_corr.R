@@ -1,12 +1,12 @@
-# ------------------------------------------------------------------------------
-# Correlation filters
-
+#' Correlation filter
+#' @export
 filter_corr <-
   new_filter_method(
     name = "corr",
     label = "Correlation Filter",
     predictor_types = c("numeric", "double", "integer"),
-    outcome_types = c("numeric", "double", "integer")
+    outcome_types = c("numeric", "double", "integer"),
+    case_weights = FALSE
   )
 
 # TODO don't need, p
@@ -23,7 +23,10 @@ filter_corr <-
 #' @return A tibble with a character column (`variable`) and a column for the
 #' score values.
 #' @export
+#' @keywords internal
 fit_xy.filter_method_corr <- function(object, x, y,  ...) {
+ # TODO modularize
+ # TODO check for package installs
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -41,16 +44,20 @@ fit_xy.filter_method_corr <- function(object, x, y,  ...) {
 
 ###
 
+#' @rdname filter_corr
+#' @export
 filter_corr_rank <-
   new_filter_method(
     name = "corr_rank",
     label = "Rank Correlation Filter",
     predictor_types = c("numeric", "double", "integer"),
-    outcome_types = c("numeric", "double", "integer")
+    outcome_types = c("numeric", "double", "integer"),
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
+#' @keywords internal
 fit_xy.filter_method_corr_rank <- function(object, x, y,  ...) {
   fit_xy.filter_method_corr(object, x, y, method = "spearman")
 }
