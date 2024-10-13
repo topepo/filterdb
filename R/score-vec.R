@@ -45,18 +45,18 @@ new_score_vec <-
 #' set.seed(1)
 #' score_vec(rnorm(10), "zero")
 #' @export
-score_vec <-
-  function(x = numeric(), direction = "maximize", impute = Inf, call = rlang::caller_env()) {
-    check_number_decimal_vec(x, allow_na = TRUE, call = call)
-    check_string(direction, call = call)
-    check_number_decimal(impute, call = call)
+score_vec <- function(x = numeric(), direction = "maximize", impute = Inf,
+                      call = rlang::caller_env()) {
+  check_number_decimal_vec(x, allow_na = TRUE, call = call)
+  check_string(direction, call = call)
+  check_number_decimal(impute, call = call)
 
-    new_score_vec(
-      x = x,
-      direction = direction,
-      impute = impute
-    )
-  }
+  new_score_vec(
+    x = x,
+    direction = direction,
+    impute = impute
+  )
+}
 
 # ------------------------------------------------------------------------------
 # Printing
@@ -194,7 +194,10 @@ impute_score.default <- function(x) {
 
 #' @export
 impute_score.score_vec <- function(x) {
-  x[is.na(x)] <- missing_val(x)
+  miss <- is.na(x)
+  if (any(miss)) {
+    x[miss] <- missing_val(x)
+  }
   x
 }
 

@@ -44,13 +44,6 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
     }
   }
   score <- new_score_vec(unname(res), direction = "maximize", impute = Inf)
-
-  res <-
-    new_filter_results(
-      names(res),
-      score,
-      object,
-     
-    )
+  res <- new_filter_results(names(res), score, object)
   res
 }

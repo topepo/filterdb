@@ -12,8 +12,7 @@ filter_imp_rf <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_imp_rf <- function(object, x, y,
-                                        seed = sample.int(1000, 1), ...) {
+fit_xy.filter_method_imp_rf <- function(object, x, y, seed = sample.int(1000, 1), ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -36,13 +35,7 @@ fit_xy.filter_method_imp_rf <- function(object, x, y,
 
   scores <- score_vec(unname(res$variable.importance), impute = Inf)
 
-  res <-
-    new_filter_results(
-      names(res$variable.importance),
-      scores,
-      object,
-     
-    )
+  res <- new_filter_results(names(res$variable.importance), scores, object)
   res
 }
 
@@ -60,8 +53,7 @@ filter_imp_crf <-
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_imp_crf <- function(object, x, y,
-                                         seed = sample.int(1000, 1), ...) {
+fit_xy.filter_method_imp_crf <- function(object, x, y, seed = sample.int(1000, 1), ...) {
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
   cols <- has_data_for_method(object, x, y)
@@ -75,7 +67,13 @@ fit_xy.filter_method_imp_crf <- function(object, x, y,
   y <- y[[1]]
   p <- ncol(x)
 
-  cl_fit <- rlang::call2("cforest", .ns = "party", formula = quote(f), data = quote(dat), ...)
+  cl_fit <- rlang::call2(
+    "cforest",
+    .ns = "party",
+    formula = quote(f),
+    data = quote(dat),
+    ...
+  )
   set.seed(seed) # TODO use withr::with_seed?
   fit <- try(rlang::eval_tidy(cl_fit), silent = TRUE)
 
@@ -93,12 +91,6 @@ fit_xy.filter_method_imp_crf <- function(object, x, y,
 
   scores <- score_vec(unname(res), impute = Inf)
 
-  res <-
-    new_filter_results(
-      names(res),
-      scores,
-      object,
-     
-    )
+  res <- new_filter_results(names(res), scores, object)
   res
 }

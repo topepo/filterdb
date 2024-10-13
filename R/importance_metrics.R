@@ -67,7 +67,7 @@ print.importance_metrics <- function(x, ...) {
 
 get_filter <- function(x, call) {
   y <- paste0("filter_", x)
-  res <- try(getFromNamespace(y, "filterdb"), silent = TRUE)
+  res <- try(utils::getFromNamespace(y, "filterdb"), silent = TRUE)
   if (inherits(res, "try-error")) {
     msg <- as.character(res)
     cli::cli_warn("No information was found for filter {.val {x}}. Skipping...",

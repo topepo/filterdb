@@ -35,10 +35,8 @@ fit_xy.filter_method_max_diff <- function(object, x, y, ...) {
   x <- x[, cols$predictors]
   y <- y[, cols$outcomes]
 
-  p <- ncol(x)
-
   res <- purrr::map_dbl(x, ~ comp_max_diff(.x, y = y[[1]]))
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = Inf)
-  res <- new_filter_results(names(x), score, object,)
+  res <- new_filter_results(names(x), score, object)
   res
 }

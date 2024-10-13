@@ -4,8 +4,8 @@
 
 check_data_for_filters <- function(info, x, y, call) {
   correct_data <-
-    map_lgl(info,
-            ~ check_data_for_method(.x, x, y, verbose = TRUE, call = call))
+    purrr::map_lgl(info,
+                   ~ check_data_for_method(.x, x, y, verbose = TRUE, call = call))
   if (!any(correct_data)) {
     cli::cli_abort("There were no appropriate columns for any filter", call = call)
   }
@@ -57,7 +57,7 @@ has_col_class <- function(x, cls) {
 }
 
 has_data_classes <- function(.data, cls) {
-  res <- purrr:::map_lgl(.data, ~ has_col_class(.x, cls))
+  res <- purrr::map_lgl(.data, ~ has_col_class(.x, cls))
   names(res)[res]
 }
 

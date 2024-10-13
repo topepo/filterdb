@@ -30,14 +30,15 @@ new_filter_method <- function(name, label, predictor_types, outcome_types, pkgs 
 
 new_filter_results <- function(predictors, results, object, call = rlang::caller_env()) {
   # check dims and types
-   if (!is.character(predictors)) {
-     cli::cli_abort("{.arg predictors} should be a character vector", call = call)
-   }
+  if (!is.character(predictors)) {
+    cli::cli_abort("{.arg predictors} should be a character vector", call = call)
+  }
   if (!is.numeric(results)) {
     cli::cli_abort("{.arg results} should be a numeric vector", call = call)
   }
   if (length(predictors) != length(results)) {
-    cli::cli_abort("{.arg results} and {.arg predictors} should be the same length", call = call)
+    cli::cli_abort("{.arg results} and {.arg predictors} should be the same length",
+                   call = call)
   }
 
   # ------------------------------------------------------------------------------
@@ -76,7 +77,7 @@ transform_score <- function(x, goal) {
 }
 
 filter_methods <- function() {
-  fit_methods <- as.character(.S3methods("fit_xy"))
+  fit_methods <- as.character(utils::.S3methods("fit_xy"))
   fit_methods <- grep("fit_xy.filter_method_", fit_methods, value = TRUE)
   fit_methods <- gsub("fit_xy.filter_method_", "", fit_methods)
   fit_methods

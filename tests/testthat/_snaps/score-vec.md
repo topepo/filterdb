@@ -42,7 +42,7 @@
       score_vec(dbl_val, direction = "bigly")
     Condition
       Error in `new_score_vec()`:
-      ! `direction` must be one of "maximize", "minimize", or "zero", not "bigly".
+      ! `direction` must be one of "maximize", "minimize", "maximize_abs", "minimize_abs", or "zero", not "bigly".
 
 ---
 
@@ -90,7 +90,9 @@
       print(res_1)
     Output
       [1] -0.626  0.184 -0.836
-      Direction: maximize 
+    Message
+      Direction: "maximize"
+      Imputed value: Inf
 
 ---
 
@@ -98,7 +100,9 @@
       print(res_1, digits = 10)
     Output
       [1] -0.6264538107  0.1836433242 -0.8356286124
-      Direction: maximize 
+    Message
+      Direction: "maximize"
+      Imputed value: Inf
 
 ---
 

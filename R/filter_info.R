@@ -41,7 +41,7 @@ fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
       res$variable,
       score,
       object,
-     
+
     )
   res
 }
@@ -87,7 +87,7 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
       res$variable,
       score,
       object,
-     
+
     )
   res
 }
@@ -129,14 +129,7 @@ fit_xy.filter_method_mic <- function(object, x, y, ...) {
   }
 
   score <- new_score_vec(res, direction = "maximize", impute = Inf)
-
-  res <-
-    new_filter_results(
-      colnames(x),
-      score,
-      object,
-     
-    )
+  res <- new_filter_results(colnames(x), score, object)
   res
 }
 

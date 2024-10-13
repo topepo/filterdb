@@ -30,14 +30,12 @@ fit_xy.filter_method_corr <- function(object, x, y,  ...) {
   x <- x[, cols$predictors]
   y <- y[, cols$outcomes]
 
-  p <- ncol(x)
-
   res <- cor(dplyr::bind_cols(y, x), use = "pairwise.complete.obs", ...)
   res <- abs(res[1, -1])
 
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = 1.0)
 
-  res <- new_filter_results(names(x), score, object,)
+  res <- new_filter_results(names(x), score, object)
   res
 }
 

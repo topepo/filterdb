@@ -15,27 +15,27 @@
 \alias{fit_xy.filter_method_roc_auc}
 \title{Execute a single supervised filter}
 \usage{
-\method{fit_xy}{filter_method_corr}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_corr}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_corr_rank}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_corr_rank}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_imp_rf}(object, x, y, rename = FALSE, seed = sample.int(1000, 1), ...)
+\method{fit_xy}{filter_method_imp_rf}(object, x, y, seed = sample.int(1000, 1), ...)
 
-\method{fit_xy}{filter_method_imp_crf}(object, x, y, rename = FALSE, seed = sample.int(1000, 1), ...)
+\method{fit_xy}{filter_method_imp_crf}(object, x, y, seed = sample.int(1000, 1), ...)
 
-\method{fit_xy}{filter_method_info_gain}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_info_gain}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_info_gain_ratio}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_info_gain_ratio}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_mic}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_mic}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_max_diff}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_max_diff}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_mrmr}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_mrmr}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_imp_pls}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_imp_pls}(object, x, y, ...)
 
-\method{fit_xy}{filter_method_roc_auc}(object, x, y, rename = FALSE, ...)
+\method{fit_xy}{filter_method_roc_auc}(object, x, y, ...)
 }
 \arguments{
 \item{object}{An object of class \code{filter_method}.}
@@ -43,9 +43,6 @@
 \item{x}{A data frame of predictors.}
 
 \item{y}{A data frame with the outcome column.}
-
-\item{rename}{A logical; if \code{TRUE} then the results are given the name of the
-filter (e.g., \code{corr}). Otherwise the column is named \code{score}.}
 
 \item{...}{Options passed to the underlying method (if any).}
 
