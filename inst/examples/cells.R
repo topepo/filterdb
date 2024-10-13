@@ -20,19 +20,19 @@ cells$case <- NULL
 
 # Look at how filters applied to different variable subsets work
 vals_roc <- fit_xy(
-  colino:::filter_roc_auc,
+  filterdb:::filter_roc_auc,
   x = cells %>% select(-ends_with("ch_1"), -class),
   y = cells %>% select(class)
 )
 
 vals_mrmr <- fit_xy(
-  colino:::filter_mrmr,
+  filterdb:::filter_mrmr,
   x = cells %>% select(-ends_with("ch_2"), -class),
   y = cells %>% select(class)
 )
 
 vals_gain <- fit_xy(
-  colino:::filter_info_gain_ratio,
+  filterdb:::filter_info_gain_ratio,
   x = cells %>% select(-class),
   y = cells %>% select(class)
 )

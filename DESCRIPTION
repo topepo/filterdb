@@ -16,7 +16,6 @@ Imports:
     pillar,
     purrr,
     rlang (>= 1.1.0),
-    tidyr,
     vctrs
 Suggests: 
     covr,

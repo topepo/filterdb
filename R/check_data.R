@@ -65,3 +65,13 @@ check_data_classes <- function(.data, cls) {
   has_cls <- has_data_classes(.data, cls)
   length(has_cls) > 0
 }
+
+# ------------------------------------------------------------------------------
+
+check_num_classes <- function(x, num_lvls = 2) {
+  length(levels(x)) == num_lvls
+}
+
+check_two_class <- function(x, num_vals = 5) {
+  vctrs::vec_unique_count(x) >= num_vals
+}

@@ -5,8 +5,8 @@ filter_corr <-
   new_filter_method(
     name = "corr",
     label = "Correlation Filter",
-    predictor_types = c("double", "integer"),
-    outcome_types = c("double", "integer")
+    predictor_types = c("numeric", "double", "integer"),
+    outcome_types = c("numeric", "double", "integer")
   )
 
 # TODO don't need, p
@@ -31,7 +31,7 @@ fit_xy.filter_method_corr <- function(object, x, y,  ...) {
   y <- y[, cols$outcomes]
 
   res <- cor(dplyr::bind_cols(y, x), use = "pairwise.complete.obs", ...)
-  res <- abs(res[1, -1])
+  res <- res[1, -1]
 
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = 1.0)
 
@@ -45,8 +45,8 @@ filter_corr_rank <-
   new_filter_method(
     name = "corr_rank",
     label = "Rank Correlation Filter",
-    predictor_types = c("double", "integer"),
-    outcome_types = c("double", "integer")
+    predictor_types = c("numeric", "double", "integer"),
+    outcome_types = c("numeric", "double", "integer")
   )
 
 #' @rdname fit_xy.filter_method_corr

@@ -5,7 +5,7 @@ filter_roc_auc <-
   new_filter_method(
     name = "roc_auc",
     label = "Area under the ROC Curve",
-    predictor_types = c("double", "integer"),
+    predictor_types = c("numeric", "double", "integer"),
     outcome_types = "factor",
     pkgs = "pROC"
   )

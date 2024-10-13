@@ -1,3 +1,27 @@
+#' Compute univariate scores of predictors
+#'
+#' @param methods A character string of available scores. See [filter_methods()].
+#' @param x A data frame of predictors.
+#' @param y A data frame with a single outcome column.
+#' @param A named list of options for the chosen `methods`.
+#' @return An object with class `importance_metrics`. The elements are `values`
+#' (a list of data frames of scores) and `info` (a list with the details of each
+#' method).
+#' @examples
+#' if (rlang::is_installed(c("dplyr", "modeldata"))) {
+#'   library(dplyr)
+#'   library(modeldata)
+#'
+#'   ames_scores <-
+#'     importance_metrics(
+#'       ames %>% select(-Sale_Price),
+#'       y = ames %>% select(Sale_Price),
+#'       methods = c("corr")
+#'     )
+#'
+#'   ames_scores
+#' }
+#'
 #' @export
 importance_metrics <- function(x, y, methods, opts = list()) {
   cl <- rlang::caller_env()
@@ -19,7 +43,7 @@ importance_metrics <- function(x, y, methods, opts = list()) {
   names(res) <- purrr::map_chr(filter_info, ~ .x$name)
 
   res <- list(values = res, info = filter_info)
-  class(res) <- c("importance_metrics", class(res))
+  class(res) <- c("importance_metrics")
   res
 
 }
@@ -28,7 +52,7 @@ importance_metrics <- function(x, y, methods, opts = list()) {
 # Methods
 
 #' @export
-tidy.importance_metrics <- function(x, impute = TRUE, ...) {
+tidy.importance_metrics <- function(x, impute = TRUE, transform = TRUE, ...) {
   nms <- purrr::map_chr(x$info, ~ .x$name)
 
   vals <- purrr::map2(x$values, nms, ~ rlang::set_names(.x, c("term", .y)))
@@ -44,6 +68,11 @@ tidy.importance_metrics <- function(x, impute = TRUE, ...) {
   if (impute) {
     for (i in nms) {
       score_df[[i]] <- impute_score(score_df[[i]])
+    }
+  }
+  if (transform) {
+    for (i in nms) {
+      score_df[[i]] <- transform(score_df[[i]])
     }
   }
   score_df

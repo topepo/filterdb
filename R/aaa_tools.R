@@ -76,6 +76,32 @@ transform_score <- function(x, goal) {
   x
 }
 
+#' Find available importance filters
+#'
+#' This function shows the methods that can be used with [importance_metrics()].
+#'
+#' @details
+#'
+#' - `corr`: The correlation between numeric predictors and a numeric outcome.
+#' - `corr_rank`: The Spearman (rank) correlation between numeric predictors and
+#'    a numeric outcome.
+#' - `imp_crf`: The unbiased variable importance score from a conditional
+#'    inference random forest model. Any type of predictor or outcome can be used.
+#' - `imp_pls`:
+#' - `imp_rf`: The variable importance score from a standard random
+#'    forest model. Any type of predictor or outcome can be used.
+#' - `info_gain`:
+#' - `info_gain_ratio`:
+#' - `max_diff`:
+#' - `mic`:
+#' - `mrmr`:
+#' - `roc_auc`: The area under the receiver operating characteristic (ROC) curve
+#'    for numeric predictors and a binary outcome.
+#'
+#' @return A character vector of methods.
+#' @export
+#' @examples
+#' filter_methods()
 filter_methods <- function() {
   fit_methods <- as.character(utils::.S3methods("fit_xy"))
   fit_methods <- grep("fit_xy.filter_method_", fit_methods, value = TRUE)

@@ -79,6 +79,10 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
   } else {
     res <- setNames(res, c("variable", "score"))
   }
+  nan_score <- is.nan(res$score)
+  if (any(nan_score)) {
+    res$score[nan_score] <- NA_real_
+  }
 
   score <- new_score_vec(res$score, direction = "maximize", impute = Inf)
 
@@ -98,8 +102,8 @@ filter_mic <-
   new_filter_method(
     name = "mic",
     label = "Maximal Information Coefficient",
-    predictor_types = c("double", "integer"),
-    outcome_types = c("double", "integer"),
+    predictor_types = c("numeric", "double", "integer"),
+    outcome_types = c("numeric", "double", "integer"),
     pkgs = "minerva"
   )
 
