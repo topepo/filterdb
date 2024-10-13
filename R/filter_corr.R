@@ -9,7 +9,6 @@ filter_corr <-
     case_weights = FALSE
   )
 
-# TODO don't need, p
 # TODO add a list of data hooks for additional checks
 
 #' Execute a single supervised filter

@@ -1,6 +1,7 @@
 
 # TODO quick zv scan?
 # TODO check binary outcome class?
+# TODO binary indicators to factors?
 
 check_data_for_filters <- function(info, x, y, call) {
   correct_data <-

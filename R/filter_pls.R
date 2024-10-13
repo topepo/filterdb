@@ -23,8 +23,10 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
 
   p <- ncol(x)
 
+  # TODO switch to plsda as needed by outcome type
+
   cl_fit <- rlang::call2("pls", .ns = "mixOmics", X = quote(x), Y = quote(y),
-                         mode = "classic", ...)
+                         scale = TRUE, mode = "classic", ...)
   fit <- try(rlang::eval_tidy(cl_fit), silent = TRUE)
 
   if (inherits(fit, "try-error")) {
