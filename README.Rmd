@@ -28,34 +28,51 @@ The goal of filterdb is to ...
 
 You can install the development version of filterdb like so:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```r
+require(pak)
+pak::pak("topepo/filterdb")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```{r}
+#| results: hide
+#| message: false
+#| warning: false
 library(filterdb)
-## basic example code
+library(dplyr)
+library(modeldata)
+
+data(ames)
+ames$Sale_Price <- log10(ames$Sale_Price)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
+```{r}
+ames_scores <-
+  importance_metrics(
+    ames %>% select(-Sale_Price),
+    y = ames %>% select(Sale_Price),
+    methods = c("corr_rank", "imp_rf", "max_diff")
+  )
+ames_scores
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r}
+results <- tidy(ames_scores)
+results
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+
+```{r}
+head(results$corr_rank)
+```
+
+```{r}
+results %>% 
+  filter(corr_rank < 1/3 & max_diff >= 0.4) %>% 
+  slice_max(imp_rf, n = 5)
+```
 
 ## Code of Conduct
 
