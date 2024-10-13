@@ -1,4 +1,5 @@
 #' Correlation filter
+#' @include import-standalone-obj-type.R import-standalone-types-check.R misc.R
 #' @export
 filter_corr <-
   new_filter_method(

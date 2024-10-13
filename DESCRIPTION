@@ -35,10 +35,10 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Collate: 
+    'check_data.R'
     'import-standalone-types-check.R'
     'import-standalone-obj-type.R'
-    'aaa_tools.R'
-    'check_data.R'
+    'misc.R'
     'filter_corr.R'
     'filter_imp_pls.R'
     'filter_imp_rf.R'
