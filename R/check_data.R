@@ -69,7 +69,7 @@ check_data_classes <- function(.data, cls) {
   length(has_cls) > 0
 }
 
-apply_data_filters <- function(info, x, y) {
+apply_data_filters <- function(info, x, y, case_weights = NULL) {
   # TODO check for data frame y with 1 column
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
@@ -77,7 +77,13 @@ apply_data_filters <- function(info, x, y) {
   # TODO cli stops when needed
   x <- x[, cols$predictors]
   y <- y[, cols$outcomes]
-  list(x = x, y = y)
+
+  if (!info$case_weights & !is.null(case_weights)) {
+    cli::cli_warn("Filter {.val {info$name}} does not use case weights; they
+                   will be ignored for this filter.")
+  }
+
+  list(x = x, y = y, case_weights = case_weights)
 }
 
 # ------------------------------------------------------------------------------

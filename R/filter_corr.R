@@ -24,6 +24,7 @@ filter_corr <-
 #' @export
 #' @keywords internal
 fit_xy.filter_method_corr <- function(object, x, y,  ...) {
+  # TODO add case_weights argument to fit_xy and has_data_for_method
   rlang::check_installed(object$pkgs)
  # TODO modularize
   x <- dplyr::as_tibble(x)

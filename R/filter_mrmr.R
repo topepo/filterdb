@@ -6,7 +6,7 @@
 filter_mrmr <-
   new_filter_method(
     name = "mrmr",
-    label = "Minimum Redundancy Maximal Relevancy Filter",
+    label = "Minimum Redundancy Maximal Relevancy Statistic",
     predictor_types = c("numeric", "double", "integer", "factor"),
     outcome_types = "factor",
     pkgs = "praznik",

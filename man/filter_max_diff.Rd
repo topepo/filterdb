@@ -11,6 +11,17 @@ An object of class \code{filter_method_max_diff} (inherits from \code{filter_met
 filter_max_diff
 }
 \description{
-ANOVA filters
+For numeric outcomes, this filter estimates a one-factor linear regression
+model and returns the maximum model coefficient (positive or negative). This
+corresponds to the largest difference between predictor factor levels (in
+the same units as the outcome). For binary factor outcomes, the same process
+is repeated, but the a logistic regression model is used and the estimated
+difference is in units of log odds.
+}
+\examples{
+filter_max_diff
+}
+\seealso{
+\code{\link[=fit_xy.filter_method_max_diff]{fit_xy.filter_method_max_diff()}}
 }
 \keyword{datasets}
