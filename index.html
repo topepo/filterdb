@@ -58,7 +58,81 @@
 <div class="section level1">
 <div class="page-header"><h1 id="filterdb">filterdb<a class="anchor" aria-label="anchor" href="#filterdb"></a>
 </h1></div>
-<p>Methods for Supervised Filtering of Predictors</p>
+<!-- badges: start -->
+
+<p>The goal of filterdb is to …</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of filterdb like so:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://pak.r-lib.org/" class="external-link">pak</a></span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"topepo/filterdb"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">filterdb</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org" class="external-link">modeldata</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
+<span><span class="va">ames</span><span class="op">$</span><span class="va">Sale_Price</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ames</span><span class="op">$</span><span class="va">Sale_Price</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ames_scores</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="reference/importance_metrics.html">importance_metrics</a></span><span class="op">(</span></span>
+<span>    <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Sale_Price</span><span class="op">)</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span>,</span>
+<span>    methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"corr_rank"</span>, <span class="st">"imp_rf"</span>, <span class="st">"max_diff"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">ames_scores</span></span>
+<span><span class="co">#&gt; Univariate importance scores</span></span>
+<span><span class="co">#&gt; • Rank Correlation Filter: 33 predictors</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • Random Forest Variable Importance: 73 predictors</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • Maximum Group Difference: 40 predictors</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">ames_scores</span><span class="op">)</span></span>
+<span><span class="va">results</span></span>
+<span><span class="co">#&gt; # A tibble: 73 × 4</span></span>
+<span><span class="co">#&gt;    term            corr_rank     imp_rf   max_diff</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;          &lt;score_vc&gt; &lt;score_vc&gt; &lt;score_vc&gt;</span></span>
+<span><span class="co">#&gt;  1 Lot_Frontage       0.2276    0.75115        Inf</span></span>
+<span><span class="co">#&gt;  2 Lot_Area           0.4292    1.64612        Inf</span></span>
+<span><span class="co">#&gt;  3 Year_Built         0.6808    5.15427        Inf</span></span>
+<span><span class="co">#&gt;  4 Year_Remod_Add     0.6015    3.29389        Inf</span></span>
+<span><span class="co">#&gt;  5 Mas_Vnr_Area       0.4348    1.33136        Inf</span></span>
+<span><span class="co">#&gt;  6 BsmtFin_SF_1       0.1152    0.47158        Inf</span></span>
+<span><span class="co">#&gt;  7 BsmtFin_SF_2       0.0339    0.00751        Inf</span></span>
+<span><span class="co">#&gt;  8 Bsmt_Unf_SF        0.1641    0.33071        Inf</span></span>
+<span><span class="co">#&gt;  9 Total_Bsmt_SF      0.6066    4.33000        Inf</span></span>
+<span><span class="co">#&gt; 10 First_Flr_SF       0.5815    3.98487        Inf</span></span>
+<span><span class="co">#&gt; # ℹ 63 more rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">corr_rank</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.228 0.429 0.681 0.601 0.435 0.115</span></span>
+<span><span class="co">#&gt; Direction: "maximize_abs"</span></span>
+<span><span class="co">#&gt; Imputed value: 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">corr_rank</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">&amp;</span> <span class="va">max_diff</span> <span class="op">&gt;=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max</a></span><span class="op">(</span><span class="va">imp_rf</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span><span class="co">#&gt;   term           corr_rank     imp_rf   max_diff</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;score_vc&gt; &lt;score_vc&gt; &lt;score_vc&gt;</span></span>
+<span><span class="co">#&gt; 1 Latitude           0.295      1.676        Inf</span></span>
+<span><span class="co">#&gt; 2 Second_Flr_SF      0.247      1.513        Inf</span></span>
+<span><span class="co">#&gt; 3 Lot_Frontage       0.228      0.751        Inf</span></span>
+<span><span class="co">#&gt; 4 Bedroom_AbvGr      0.197      0.495        Inf</span></span>
+<span><span class="co">#&gt; 5 BsmtFin_SF_1       0.115      0.472        Inf</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>Please note that the filterdb project is released with a <a href="https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+</div>
 </div>
   </div>
 
@@ -93,7 +167,15 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://CRAN.R-project.org/package=filterdb" class="external-link"><img src="https://www.r-pkg.org/badges/version/filterdb" alt="CRAN status"></a></li>
+<li><a href="https://app.codecov.io/gh/topepo/filterdb?branch=main" class="external-link"><img src="https://codecov.io/gh/topepo/filterdb/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/topepo/filterdb/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/topepo/filterdb/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
 
   </div>
 </div>

@@ -6,14 +6,21 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/as_score_vec.html</loc></url>
+<url><loc>/reference/filter_corr.html</loc></url>
+<url><loc>/reference/filter_imp_pls.html</loc></url>
+<url><loc>/reference/filter_imp_rf.html</loc></url>
+<url><loc>/reference/filter_info_gain.html</loc></url>
+<url><loc>/reference/filter_max_diff.html</loc></url>
+<url><loc>/reference/filter_methods.html</loc></url>
+<url><loc>/reference/filter_mrmr.html</loc></url>
+<url><loc>/reference/filter_roc_auc.html</loc></url>
 <url><loc>/reference/filterdb-package.html</loc></url>
 <url><loc>/reference/fit_xy.filter_method_corr.html</loc></url>
-<url><loc>/reference/get_score_info.html</loc></url>
+<url><loc>/reference/importance_metrics.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/is_score_vec.html</loc></url>
-<url><loc>/reference/join_scores.html</loc></url>
 <url><loc>/reference/reexports.html</loc></url>
-<url><loc>/reference/return-direction.html</loc></url>
+<url><loc>/reference/score-helpers.html</loc></url>
 <url><loc>/reference/score_vec.html</loc></url>
 </urlset>
 
