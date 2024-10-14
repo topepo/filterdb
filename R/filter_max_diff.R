@@ -1,13 +1,22 @@
-# ------------------------------------------------------------------------------
-# Max difference in the outcome between groups of a factor predictor
-
+#' ANOVA filters
+#'
+#' For numeric outcomes, this filter estimates a one-factor linear regression
+#' model and returns the maximum model coefficient (positive or negative). This
+#' corresponds to the largest difference between predictor factor levels (in
+#' the same units as the outcome). For binary factor outcomes, the same process
+#' is repeated, but the a logistic regression model is used and the estimated
+#' difference is in units of log odds.
+#' @examples
+#' filter_max_diff
+#' @seealso [fit_xy.filter_method_max_diff()]
+#' @export
 filter_max_diff <-
   new_filter_method(
     name = "max_diff",
     label = "Maximum Group Difference",
-    goal = "maximize",
-    inputs = "qualitative",
-    outputs = "all"
+    predictor_types = "factor",
+    outcome_types = c("numeric", "double", "integer", "factor"),
+    case_weights = TRUE
   )
 
 comp_max_diff <- function(x, y) {
@@ -29,14 +38,16 @@ comp_max_diff <- function(x, y) {
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_max_diff <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_max_diff <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
-
-  p <- ncol(x)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   res <- purrr::map_dbl(x, ~ comp_max_diff(.x, y = y[[1]]))
-  res <- new_filter_results(names(x), res, object, rename = rename, num_pred = p)
+  score <- new_score_vec(unname(res), direction = "maximize_abs", impute = Inf)
+  res <- new_filter_results(names(x), score, object)
   res
 }

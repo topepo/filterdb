@@ -1,14 +1,13 @@
-# ------------------------------------------------------------------------------
-# Area under the ROC curve
-
+#' Area under the ROC curve filter
+#' @export
 filter_roc_auc <-
   new_filter_method(
     name = "roc_auc",
     label = "Area under the ROC Curve",
-    goal = "maximize",
-    inputs = "quantitative",
-    outputs = "qualitative",
-    pkgs = "pROC"
+    predictor_types = c("numeric", "double", "integer"),
+    outcome_types = "factor",
+    pkgs = "pROC",
+    case_weights = FALSE
   )
 
 roc_wrapper <- function(x, y, ...) {
@@ -29,22 +28,23 @@ roc_wrapper <- function(x, y, ...) {
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_roc_auc <- function(object, x, y, rename = FALSE, ...) {
+fit_xy.filter_method_roc_auc <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
+
   # check empty dots
   # case weights? event_level?
   x <- dplyr::as_tibble(x)
-  if (is.vector(y)) {
-    y <- dplyr::as_tibble(y)
-  }
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   p <- ncol(x)
 
   # Add wrapper using call and catch errors
   roc_scores <- purrr::map_dbl(x, ~ roc_wrapper(x = .x, y = y[[1]])) # TODO add in the ...
   roc_scores <- ifelse(roc_scores < 0.5, 1 - roc_scores, roc_scores)
+  score <- new_score_vec(unname(roc_scores), direction = "maximize", impute = 1.0)
 
-  res <- new_filter_results(names(x), roc_scores, object, rename = rename,
-                            num_pred = p)
+  res <- new_filter_results(names(x), score, object)
   res
 }

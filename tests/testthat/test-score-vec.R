@@ -18,7 +18,6 @@ test_that('creating score vectors', {
 
 })
 
-
 test_that('printing score vectors', {
 
   set.seed(1)
@@ -31,7 +30,6 @@ test_that('printing score vectors', {
 
 })
 
-
 test_that('score vectors in filter results', {
   skip_if_not_installed("modeldata")
   library(dplyr)
@@ -43,11 +41,10 @@ test_that('score vectors in filter results', {
            y = meats %>% select(water))
 
   expect_true(is_score_vec(corr_res$score))
-  expect_equal(direction(corr_res$score), "maximize")
-  expect_equal(missing_val(corr_res$score), Inf)
+  expect_equal(direction(corr_res$score), "maximize_abs")
+  expect_equal(missing_val(corr_res$score), 1.0)
 
 })
-
 
 test_that('score vectors helpers', {
 
@@ -56,7 +53,10 @@ test_that('score vectors helpers', {
 
   expect_snapshot(unclass(as_score_vec(1:5)))
   expect_snapshot(as_score_vec(letters), error = TRUE)
-  expect_equal(as.numeric(as_score_vec(1:5)), 1:5)
+  expect_equal(
+    as.numeric(as_score_vec(1:5)),
+    structure(1:5, direction = "maximize", impute = Inf)
+  )
 
   expect_snapshot(direction(1:3), error = TRUE)
   expect_equal(missing_val(as_score_vec(1:5, "zero", 0)), 0.0)

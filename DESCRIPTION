@@ -16,7 +16,6 @@ Imports:
     pillar,
     purrr,
     rlang (>= 1.1.0),
-    tidyr,
     vctrs
 Suggests: 
     covr,
@@ -36,19 +35,19 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Collate: 
+    'check_data.R'
     'import-standalone-types-check.R'
     'import-standalone-obj-type.R'
-    'aaa_tools.R'
+    'misc.R'
     'filter_corr.R'
-    'filter_imp.R'
+    'filter_imp_pls.R'
+    'filter_imp_rf.R'
     'filter_info.R'
     'filter_max_diff.R'
     'filter_mrmr.R'
-    'filter_pls.R'
     'filter_roc_auc.R'
     'filterdb-package.R'
-    'join.R'
-    'reexports.R'
+    'importance_metrics.R'
     'score-vec.R'
     'vctrs.R'
     'zzz.R'

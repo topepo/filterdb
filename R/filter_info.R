@@ -1,23 +1,25 @@
-# ------------------------------------------------------------------------------
-# Information
-
-
+#' Information theory filters
+#' @export
 filter_info_gain <-
   new_filter_method(
     name = "info_gain",
     label = "Information Gain",
-    goal = "maximize",
-    inputs = "all",
-    outputs = "qualitative",
-    pkgs = "FSelectorRcpp"
+    predictor_types = c("numeric", "double", "integer", "factor"),
+    outcome_types = "factor",
+    pkgs = "FSelectorRcpp",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
+#' @keywords internal
+fit_xy.filter_method_info_gain <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   y <- y[[1]]
   p <- ncol(x)
@@ -33,35 +35,42 @@ fit_xy.filter_method_info_gain <- function(object, x, y, rename = FALSE, ...) {
     res <- setNames(res, c("variable", "score"))
   }
 
+  score <- new_score_vec(res$score, direction = "maximize", impute = Inf)
+
   res <-
     new_filter_results(
       res$variable,
-      res$score,
+      score,
       object,
-      rename = rename,
-      num_pred = p
+
     )
   res
 }
 
 ###
 
+#' @rdname filter_info_gain
+#' @export
 filter_info_gain_ratio <-
   new_filter_method(
     name = "info_gain_ratio",
     label = "Information Gain Ratio",
-    goal = "maximize",
-    inputs = "all",
-    outputs = "qualitative",
-    pkgs = "FSelectorRcpp"
+    predictor_types = c("numeric", "double", "integer", "factor"),
+    outcome_types = "factor",
+    pkgs = "FSelectorRcpp",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, ...) {
+#' @keywords internal
+fit_xy.filter_method_info_gain_ratio <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- as.data.frame(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   y <- y[[1]]
   p <- ncol(x)
@@ -76,36 +85,47 @@ fit_xy.filter_method_info_gain_ratio <- function(object, x, y, rename = FALSE, .
   } else {
     res <- setNames(res, c("variable", "score"))
   }
+  nan_score <- is.nan(res$score)
+  if (any(nan_score)) {
+    res$score[nan_score] <- NA_real_
+  }
+
+  score <- new_score_vec(res$score, direction = "maximize", impute = Inf)
 
   res <-
     new_filter_results(
       res$variable,
-      res$score,
+      score,
       object,
-      rename = rename,
-      num_pred = p
+
     )
   res
 }
 
 ###
 
+#' @rdname filter_info_gain
+#' @export
 filter_mic <-
   new_filter_method(
     name = "mic",
     label = "Maximal Information Coefficient",
-    goal = "maximize",
-    inputs = "quantitative",
-    outputs = "quantitative",
-    pkgs = "minerva"
+    predictor_types = c("numeric", "double", "integer"),
+    outcome_types = c("numeric", "double", "integer"),
+    pkgs = "minerva",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
+#' @keywords internal
+fit_xy.filter_method_mic <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   x <- as.matrix(x)
   y <- y[[1]]
@@ -123,14 +143,8 @@ fit_xy.filter_method_mic <- function(object, x, y, rename = FALSE, ...) {
     res <- res$MIC[,1]
   }
 
-  res <-
-    new_filter_results(
-      colnames(x),
-      res,
-      object,
-      rename = rename,
-      num_pred = p
-    )
+  score <- new_score_vec(res, direction = "maximize", impute = Inf)
+  res <- new_filter_results(colnames(x), score, object)
   res
 }
 

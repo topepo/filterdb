@@ -1,26 +1,32 @@
-# PLS methods
-
+#' Partial least squares importance filters
+#' @export
 filter_imp_pls <-
   new_filter_method(
     name = "imp_pls",
     label = "Partial Least Squares Variable Importance",
-    goal = "maximize",
-    inputs = "quantitative",
-    outputs = "all",
-    pkgs = "mixOmics"
+    predictor_types = c("numeric", "double", "integer"),
+    outcome_types = c("numeric", "double", "integer", "factor"),
+    pkgs = "mixOmics",
+    case_weights = FALSE
   )
 
 #' @rdname fit_xy.filter_method_corr
 #' @export
-fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
+#' @keywords internal
+fit_xy.filter_method_imp_pls <- function(object, x, y, ...) {
+  rlang::check_installed(object$pkgs)
   x <- dplyr::as_tibble(x)
   y <- dplyr::as_tibble(y)
-  validate_filter_data(object, x, y)
+  cols <- has_data_for_method(object, x, y)
+  x <- x[, cols$predictors]
+  y <- y[, cols$outcomes]
 
   p <- ncol(x)
 
+  # TODO switch to plsda as needed by outcome type
+
   cl_fit <- rlang::call2("pls", .ns = "mixOmics", X = quote(x), Y = quote(y),
-                         mode = "classic", ...)
+                         scale = TRUE, mode = "classic", ...)
   fit <- try(rlang::eval_tidy(cl_fit), silent = TRUE)
 
   if (inherits(fit, "try-error")) {
@@ -42,14 +48,7 @@ fit_xy.filter_method_imp_pls <- function(object, x, y, rename = FALSE, ...) {
       names(res) <- nms
     }
   }
-
-  res <-
-    new_filter_results(
-      names(res),
-      unname(res),
-      object,
-      rename = rename,
-      num_pred = p
-    )
+  score <- new_score_vec(unname(res), direction = "maximize", impute = Inf)
+  res <- new_filter_results(names(res), score, object)
   res
 }

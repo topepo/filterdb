@@ -9,7 +9,7 @@ new_score_vec <-
     check_number_decimal_vec(x, allow_na = TRUE, call = call)
 
     stopifnot(is.character(direction) && length(direction) == 1L && !is.na(direction))
-    direction <- rlang::arg_match0(direction, c("maximize", "minimize", "zero"))
+    direction <- rlang::arg_match0(direction, goal_types)
 
     stopifnot(is.numeric(impute) && length(impute) == 1L && !is.na(impute))
 
@@ -45,18 +45,18 @@ new_score_vec <-
 #' set.seed(1)
 #' score_vec(rnorm(10), "zero")
 #' @export
-score_vec <-
-  function(x = numeric(), direction = "maximize", impute = Inf, call = rlang::caller_env()) {
-    check_number_decimal_vec(x, allow_na = TRUE, call = call)
-    check_string(direction, call = call)
-    check_number_decimal(impute, call = call)
+score_vec <- function(x = numeric(), direction = "maximize", impute = Inf,
+                      call = rlang::caller_env()) {
+  check_number_decimal_vec(x, allow_na = TRUE, call = call)
+  check_string(direction, call = call)
+  check_number_decimal(impute, call = call)
 
-    new_score_vec(
-      x = x,
-      direction = direction,
-      impute = impute
-    )
-  }
+  new_score_vec(
+    x = x,
+    direction = direction,
+    impute = impute
+  )
+}
 
 # ------------------------------------------------------------------------------
 # Printing
@@ -124,26 +124,40 @@ as_score_vec.numeric <- function(x, direction = "maximize", impute = Inf) {
 # -----------------------
 # direction
 # missing_val
+# transform
 
-#' Return desired direction
+#' Helpers for score vectors
 #'
+#' @param x,_data A `score_vec` object.
+#' @param ... Not used.
 #'
-#' @param x A `score_vec` object.
+#' @return
 #'
-#' @return A single character value (for the entire vector)
+#' - `direction()` returns single character value (for the entire vector)
+#' - `missing_val()` returns a numeric value that corresponds to a score that
+#'   will prevent any predictor from being removed.
+#' - `impute_score()` returns a `score_vec` with any missing values filled in
+#'   with the results of `missing_val()`.
+#' - `transform()` returns a `score_vec` with the values transformed in line
+#'   it's goal. For goals of `"maximize_abs"`, `"minimize_abs"`, and `"zero"`
+#'   the absolute value of the score is returned.
 #'
 #' @examples
 #' set.seed(1)
-#' roc_values <- score_vec(runif(10, min = 1 / 2), "maximize")
-#' direction(roc_values)
+#' cor_values <- score_vec(runif(10, min = -1), direction = "maximize_abs", impute = 1.0)
+#' direction(cor_values)
 #'
-#' try(direction(1L))
+#' transform(cor_values)
+#' missing_val(cor_values)
 #'
-#' @name return-direction
+#' cor_values_miss <- c(cor_values, NA_real_)
+#' impute_score(cor_values_miss)
+#'
+#' @name score-helpers
 #'
 NULL
 
-#' @rdname return-direction
+#' @rdname score-helpers
 #' @export
 direction <- function(x) {
   UseMethod("direction")
@@ -162,7 +176,7 @@ direction.score_vec <- function(x) {
 # -----------------------
 # missing_val
 
-#' @rdname return-direction
+#' @rdname score-helpers
 #' @export
 missing_val <- function(x) {
   UseMethod("missing_val")
@@ -181,7 +195,7 @@ missing_val.score_vec <- function(x) {
 # -----------------------
 # impute_score
 
-#' @rdname return-direction
+#' @rdname score-helpers
 #' @export
 impute_score <- function(x) {
   UseMethod("impute_score")
@@ -194,11 +208,22 @@ impute_score.default <- function(x) {
 
 #' @export
 impute_score.score_vec <- function(x) {
-  x[is.na(x)] <- missing_val(x)
+  miss <- is.na(x)
+  if (any(miss)) {
+    x[miss] <- missing_val(x)
+  }
   x
 }
 
-# TODO reorder method
+#' @rdname score-helpers
+#' @export
+transform.score_vec <- function(`_data`, ...) {
+  dir <- direction(`_data`)
+  if (any(grepl("(_abs)|(^zero$)", dir))) {
+    `_data` <- abs(`_data`)
+  }
+  `_data`
+}
 
 # -----------------------
 # is_score_vec
@@ -219,3 +244,4 @@ impute_score.score_vec <- function(x) {
 is_score_vec <- function(x) {
   inherits(x, "score_vec")
 }
+
