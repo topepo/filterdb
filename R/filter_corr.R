@@ -4,7 +4,7 @@
 filter_corr <-
   new_filter_method(
     name = "corr",
-    label = "Correlation Filter",
+    label = "Correlation",
     predictor_types = c("numeric", "double", "integer"),
     outcome_types = c("numeric", "double", "integer"),
     case_weights = FALSE

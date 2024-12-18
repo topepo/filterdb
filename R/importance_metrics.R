@@ -51,6 +51,18 @@ importance_metrics <- function(x, y, methods, opts = list()) {
 # ------------------------------------------------------------------------------
 # Methods
 
+#' Tidy importance metrics
+#'
+#' @param x An object produced by [importance_metrics()].
+#' @param impute Logical. Optional. Whether to impute missing values in a way
+#'   that will not exclude values from filtering.
+#' @param transform Logical. Optional. Whether to transform the values to be
+#'   consistent with the optimization goal. See [transform.score_vec()].
+#' @param ... Currently unused; must be empty.
+#'
+#' @returns A data frame containing importance metrics with one row per term and
+#' one column per metric.
+#'
 #' @export
 tidy.importance_metrics <- function(x, impute = TRUE, transform = TRUE, ...) {
   nms <- purrr::map_chr(x$info, ~ .x$name)
