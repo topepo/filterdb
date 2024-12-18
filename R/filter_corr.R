@@ -50,7 +50,7 @@ fit_xy.filter_method_corr <- function(object, x, y,  ...) {
 filter_corr_rank <-
   new_filter_method(
     name = "corr_rank",
-    label = "Rank Correlation Filter",
+    label = "Rank Correlation",
     predictor_types = c("numeric", "double", "integer"),
     outcome_types = c("numeric", "double", "integer"),
     case_weights = FALSE
