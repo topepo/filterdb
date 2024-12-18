@@ -9,7 +9,7 @@ filter_corr <-
     outcome_types = c("numeric", "double", "integer"),
     case_weights = FALSE
   )
-
+# TODO encode best/worst result, impute value, and goal in the filter_* object?
 # TODO add a list of data hooks for additional checks
 
 #' Execute a single supervised filter
@@ -37,6 +37,8 @@ fit_xy.filter_method_corr <- function(object, x, y,  ...) {
   res <- cor(dplyr::bind_cols(y, x), use = "pairwise.complete.obs", ...)
   res <- res[1, -1]
 
+  # TODO add a subclass based on filter method ("score_corr") so that we can
+  # lookup other data
   score <- new_score_vec(unname(res), direction = "maximize_abs", impute = 1.0)
 
   res <- new_filter_results(names(x), score, object)

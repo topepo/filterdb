@@ -123,3 +123,9 @@ get_filter_info <- function(x, call = rlang::caller_env()) {
   has_info <- purrr::map_lgl(res, ~ !identical(.x, character(0)))
   res[has_info]
 }
+
+#' @export
+filter.importance_metrics <- function(.data, ..., .by = NULL, .preserve = FALSE, transform = FALSE) {
+  res <- tidy(.data, transform = transform)
+  dplyr::filter(res, ..., .by = .by, .preserve = .preserve)
+}
